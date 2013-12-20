@@ -5,7 +5,7 @@ index 0000000..b575605
 +++ b/sql/TransmogDisplayVendor/characters.sql
 @@ -0,0 +1,9 @@
 +CREATE TABLE `custom_transmogrification` (
-+  `GUID` INT(10) UNSIGNED NOT NULL COMMENT 'Item guidLow',
++        `GUID` INT(10) UNSIGNED NOT NULL COMMENT 'Item guidLow',
 +	`FakeEntry` INT(10) UNSIGNED NOT NULL COMMENT 'Item entry',
 +	`Owner` INT(10) UNSIGNED NOT NULL COMMENT 'Player guidLow',
 +	PRIMARY KEY (`GUID`)
@@ -133,7 +133,6 @@ index 0000000..1ddb75e
 +Transmog display vendor
 +Code by Rochet2
 +Ideas LilleCarl
-+Traducción al Español por Nible
 +
 +ScriptName for NPC:
 +NPC_TransmogDisplayVendor
@@ -207,20 +206,20 @@ index 0000000..1ddb75e
 +{
 +    switch (slot)
 +    {
-+    case EQUIPMENT_SLOT_HEAD      : return "Cabeza";
-+    case EQUIPMENT_SLOT_SHOULDERS : return "Hombros";
-+    case EQUIPMENT_SLOT_BODY      : return "Camisa";
-+    case EQUIPMENT_SLOT_CHEST     : return "Pecho";
-+    case EQUIPMENT_SLOT_WAIST     : return "Cinturon";
-+    case EQUIPMENT_SLOT_LEGS      : return "Piernas";
-+    case EQUIPMENT_SLOT_FEET      : return "Botas";
-+    case EQUIPMENT_SLOT_WRISTS    : return "Brazales";
-+    case EQUIPMENT_SLOT_HANDS     : return "Manos";
-+    case EQUIPMENT_SLOT_BACK      : return "Capa";
-+    case EQUIPMENT_SLOT_MAINHAND  : return "Mano Principal";
++    case EQUIPMENT_SLOT_HEAD      : return "Head";
++    case EQUIPMENT_SLOT_SHOULDERS : return "Shoulders";
++    case EQUIPMENT_SLOT_BODY      : return "Shirt";
++    case EQUIPMENT_SLOT_CHEST     : return "Chest";
++    case EQUIPMENT_SLOT_WAIST     : return "Waist";
++    case EQUIPMENT_SLOT_LEGS      : return "Legs";
++    case EQUIPMENT_SLOT_FEET      : return "Feet";
++    case EQUIPMENT_SLOT_WRISTS    : return "Wrists";
++    case EQUIPMENT_SLOT_HANDS     : return "Hands";
++    case EQUIPMENT_SLOT_BACK      : return "Back";
++    case EQUIPMENT_SLOT_MAINHAND  : return "Main hand";
 +    case EQUIPMENT_SLOT_OFFHAND   : return "Off hand";
-+    case EQUIPMENT_SLOT_RANGED    : return "Rango";
-+    case EQUIPMENT_SLOT_TABARD    : return "Tabardo";
++    case EQUIPMENT_SLOT_RANGED    : return "Ranged";
++    case EQUIPMENT_SLOT_TABARD    : return "Tabard";
 +    default: return NULL;
 +    }
 +}
@@ -229,14 +228,14 @@ index 0000000..1ddb75e
 +{
 +    switch(quality)
 +    {
-+    case ITEM_QUALITY_POOR: return "|CFF9d9d9d[Pobre]";
-+    case ITEM_QUALITY_NORMAL: return "|CFFffffff[Comun]";
-+    case ITEM_QUALITY_UNCOMMON: return "|CFF1eff00[Poco comun]";
-+    case ITEM_QUALITY_RARE: return "|CFF0070dd[Raro]";
-+    case ITEM_QUALITY_EPIC: return "|CFFa335ee[Epico]";
-+    case ITEM_QUALITY_LEGENDARY: return "|CFFff8000[Legendario]";
-+    case ITEM_QUALITY_ARTIFACT: return "|CFFe6cc80[Artefacto]";
-+    case ITEM_QUALITY_HEIRLOOM: return "|CFFe5cc80[Reliquia]";
++    case ITEM_QUALITY_POOR: return "|CFF9d9d9d[Poor]";
++    case ITEM_QUALITY_NORMAL: return "|CFFffffff[Common]";
++    case ITEM_QUALITY_UNCOMMON: return "|CFF1eff00[Uncommon]";
++    case ITEM_QUALITY_RARE: return "|CFF0070dd[Rare]";
++    case ITEM_QUALITY_EPIC: return "|CFFa335ee[Epic]";
++    case ITEM_QUALITY_LEGENDARY: return "|CFFff8000[Legendary]";
++    case ITEM_QUALITY_ARTIFACT: return "|CFFe6cc80[Artifact]";
++    case ITEM_QUALITY_HEIRLOOM: return "|CFFe5cc80[Heirloom]";
 +    default: return "[Unknown]";
 +    }
 +}
@@ -332,7 +331,7 @@ index 0000000..1ddb75e
 +    Item* item = player->GetItemByPos(INVENTORY_SLOT_BAG_0, data->second.slot);
 +    if (!item)
 +    {
-+        session->SendNotification("La casilla de equipo esta vacía");
++        session->SendNotification("Equipment slot is empty");
 +        return;
 +    }
 +    if (item->GetOwnerGUID() != player->GetGUID())
@@ -346,13 +345,13 @@ index 0000000..1ddb75e
 +    std::advance(it, data->second.offset + vendorslot);
 +    if (it == oM.end() || (*it) != itemEntry)
 +    {
-+        session->SendNotification("Los objetos no coinciden");
++        session->SendNotification("Items do not match");
 +        return; // either cheat or changed items (not found in correct place in transmog vendor view)
 +    }
 +
 +    if (!TransmogDisplayVendorMgr::CanTransmogrify(tarTemplate, srcTemplate))
 +    {
-+        session->SendNotification("Los objetos no coinciden");
++        session->SendNotification("Items do not match");
 +        return;
 +    }
 +
@@ -380,7 +379,7 @@ index 0000000..1ddb75e
 +        player->ModifyMoney(-price);
 +    else
 +    {
-+        session->SendNotification("No tienes suficiente dinero.");
++        session->SendNotification("You don't have enough money");
 +        return;
 +    }
 +    if (TransmogDisplayVendorMgr::RequireToken)
@@ -388,7 +387,7 @@ index 0000000..1ddb75e
 +
 +    TransmogDisplayVendorMgr::SetFakeEntry(item, itemEntry);
 +    player->PlayDirectSound(3337);
-+    session->SendAreaTriggerMessage("%s ha sido Transfigurado", slotname);
++    session->SendAreaTriggerMessage("%s transmogrified", slotname);
 +}
 +
 +class NPC_TransmogDisplayVendor : public CreatureScript
@@ -423,7 +422,7 @@ index 0000000..1ddb75e
 +                if (!item)
 +                {
 +                    if (const char* slotname = getSlotName(action))
-+                        session->SendNotification("No hay ningun objeto equipado en la casilla de %s", slotname);
++                        session->SendNotification("No item equipped in %s slot", slotname);
 +                    OnGossipHello(player, creature);
 +                    return true;
 +                }
@@ -432,7 +431,7 @@ index 0000000..1ddb75e
 +                if (!oM->size())
 +                {
 +                    if (const char* slotname = getSlotName(action))
-+                        session->SendNotification("No hay transfiguración disponible para %s", slotname);
++                        session->SendNotification("No transmogrifications available for %s", slotname);
 +                    OnGossipHello(player, creature);
 +                    return true;
 +                }
@@ -453,7 +452,7 @@ index 0000000..1ddb75e
 +                if (player->PlayerTalkClass->GetGossipMenu().GetMenuItemCount() <= 1)
 +                {
 +                    if (const char* slotname = getSlotName(action))
-+                        session->SendNotification("No hay transfiguración disponible para %s", slotname);
++                        session->SendNotification("No transmogrifications available for %s", slotname);
 +                    player->PlayerTalkClass->ClearMenus();
 +                    OnGossipHello(player, creature);
 +                    return true;
@@ -480,11 +479,11 @@ index 0000000..1ddb75e
 +                }
 +                if (removed)
 +                {
-+                    session->SendAreaTriggerMessage("Transfiguración retirada");
++                    session->SendAreaTriggerMessage("Transmogrifications removed from equipped items");
 +                    player->PlayDirectSound(3337);
 +                }
 +                else
-+                    session->SendNotification("No tienes objetos transfigurados equipados");
++                    session->SendNotification("You have no transmogrified items equipped");
 +                OnGossipSelect(player, creature, SENDER_REMOVE_MENU, 0);
 +            } break;
 +        case SENDER_REMOVE_ONE: // Remove TransmogDisplayVendorMgr from single item
@@ -495,14 +494,14 @@ index 0000000..1ddb75e
 +                    if (TransmogDisplayVendorMgr::DeleteFakeEntry(newItem))
 +                    {
 +                        if (slotname)
-+                            session->SendAreaTriggerMessage("%s transfiguración borrada", slotname);
++                            session->SendAreaTriggerMessage("%s transmogrification removed", slotname);
 +                        player->PlayDirectSound(3337);
 +                    }
 +                    else if (slotname)
-+                        session->SendNotification("No hay transfiguración en %s slot", slotname);
++                        session->SendNotification("No transmogrification on %s slot", slotname);
 +                }
 +                else if (slotname)
-+                    session->SendNotification("No hay objetos equipados en %s slot", slotname);
++                    session->SendNotification("No item equipped in %s slot", slotname);
 +                OnGossipSelect(player, creature, SENDER_REMOVE_MENU, 0);
 +            } break;
 +        case SENDER_REMOVE_MENU:
@@ -513,11 +512,11 @@ index 0000000..1ddb75e
 +                    if (!slotname)
 +                        continue;
 +                    std::ostringstream ss;
-+                    ss << "Borrar transfiguración " << slotname << "?";
-+                    player->ADD_GOSSIP_ITEM_EXTENDED(GOSSIP_ICON_INTERACT_1, (std::string)"Borrar de "+slotname, SENDER_REMOVE_ONE, slot, ss.str().c_str(), 0, false);
++                    ss << "Remove transmogrification from " << slotname << "?";
++                    player->ADD_GOSSIP_ITEM_EXTENDED(GOSSIP_ICON_INTERACT_1, (std::string)"Remove from "+slotname, SENDER_REMOVE_ONE, slot, ss.str().c_str(), 0, false);
 +                }
-+                player->ADD_GOSSIP_ITEM_EXTENDED(GOSSIP_ICON_INTERACT_1, "Borrar todas las transfiguraciones", SENDER_REMOVE_ALL, 0, "Estas seguro de que quieres borrar la Transfiguración?", 0, false);
-+                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Volver..", SENDER_BACK, 0);
++                player->ADD_GOSSIP_ITEM_EXTENDED(GOSSIP_ICON_INTERACT_1, "Remove all transmogrifications", SENDER_REMOVE_ALL, 0, "Are you sure you want to remove all transmogrifications?", 0, false);
++                player->ADD_GOSSIP_ITEM(GOSSIP_ICON_TALK, "Back..", SENDER_BACK, 0);
 +                player->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE, creature->GetGUID());
 +            } break;
 +        default: // Show items you can use
@@ -535,7 +534,7 @@ index 0000000..1ddb75e
 +                {
 +                    if (!TransmogDisplayVendorMgr::AllowedQuality(item->GetTemplate()->Quality))
 +                    {
-+                        session->SendNotification("El objeto equipado tiene una calidad incorrecta.");
++                        session->SendNotification("Equipped item has wrong quality");
 +                        OnGossipSelect(player, creature, SENDER_SELECT_VENDOR, slot);
 +                        return true;
 +                    }
@@ -545,7 +544,7 @@ index 0000000..1ddb75e
 +                        itemCount = MAX_VENDOR_ITEMS;
 +                    if (!itemCount)
 +                    {
-+                        session->SendAreaTriggerMessage("No se han encontrado objetos.");
++                        session->SendAreaTriggerMessage("No items found");
 +                        OnGossipSelect(player, creature, SENDER_SELECT_VENDOR, slot);
 +                        return true;
 +                    }
