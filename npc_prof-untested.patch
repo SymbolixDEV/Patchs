@@ -1,0 +1,458 @@
+diff -Nuar oregoncore-current/sql/oc-patch/npc_prof-acid-optional.sql oregoncore-pq/sql/oc-patch/npc_prof-acid-optional.sql
+--- oregoncore-current/sql/oc-patch/npc_prof-acid-optional.sql	1969-12-31 19:00:00.000000000 -0500
++++ oregoncore-pq/sql/oc-patch/npc_prof-acid-optional.sql	2012-05-20 11:42:37.000000000 -0400
+@@ -0,0 +1,13 @@
++DELETE FROM creature_ai_scripts WHERE `creature_id`=90001;
++insert into creature_ai_scripts values(NULL, '90001', '1', '0', '100', '1', '25000', '25000','600000','600000', '1', '-910', '-911', '-912', '0', '0', '0', '0', '0', '0', '0', '0', 'ProfessionNPC - Random Say');
++
++
++DELETE FROM creature_ai_texts WHERE `entry`=-910;
++REPLACE INTO `creature_ai_texts` (`entry`, `content_default`, `sound`, `type`, `language`, `comment`) 
++VALUES (-910, 'Hello!  I am ProfessionNPC and I am hired by the owner of this server "OwnerServerName" to Increase Profession Skill by 5 points in exchange for 2 gold!', 0, 0, 0, 'ProfessionNPC message one');
++
++DELETE FROM creature_ai_texts WHERE `entry`=-911;
++REPLACE INTO `creature_ai_texts` (`entry`, `content_default`, `sound`, `type`, `language`, `comment`) 
++VALUES (-911, 'Hello!  I am ProfessionNPC and I am hired by the owner of this server "OwnerServerName" to Increase Profession Skill by 5 points in exchange for 2 gold!  Well crafted items sell very well these days!', 0, 0, 0, 'ProfessionNPC message two');
++
++UPDATE creature_template SET AIName='EventAI' WHERE entry=90001;
+diff -Nuar oregoncore-current/sql/oc-patch/npc_prof-readme.txt oregoncore-pq/sql/oc-patch/npc_prof-readme.txt
+--- oregoncore-current/sql/oc-patch/npc_prof-readme.txt	1969-12-31 19:00:00.000000000 -0500
++++ oregoncore-pq/sql/oc-patch/npc_prof-readme.txt	2012-05-20 11:42:37.000000000 -0400
+@@ -0,0 +1,16 @@
++###### ProfessionNPC ACID Setup ######
++
++* Set npcflag to 1 for GOSSIP 
++
++If you put X(1 Gold,2 Gold,3 Gold,etc) on SkillGoldCost and
++If you put X(1 SkillPoints,2 SkillPoints,etc) on SkillPoints Option then execute ProfessionNPC ACID.sql from Sql in your DB but first you need to edit sql file.
++
++1 Open ProfessionNPC ACID.sql and change xxxx with the ID of your ProfessionNPC
++
++2 Open ProfessionNPC ACID.sql and change OwnerServerName with the name of the owner server Example: SlashX :P
++
++3 Open ProfessionNPC ACID.sql and modify line where is 2 Points and put with your SkillPoints Example: If you put in conf on SkillPoints 3 Points then edit sql and put 3 Points :P
++
++4 Open ProfessionNPC ACID.sql and modify line where is 2 Gold and put with your gold cost Example: If you put in conf on SkillGoldCost 3 Gold then edit sql and put 3 Gold :P
++
++5 New You are now ready to use :P Have Fun
+diff -Nuar oregoncore-current/sql/oc-patch/world-npc_prof.sql oregoncore-pq/sql/oc-patch/world-npc_prof.sql
+--- oregoncore-current/sql/oc-patch/world-npc_prof.sql	1969-12-31 19:00:00.000000000 -0500
++++ oregoncore-pq/sql/oc-patch/world-npc_prof.sql	2012-05-20 11:42:37.000000000 -0400
+@@ -0,0 +1,5 @@
++-- ----------------------------
++-- Records Profession Skill
++-- ----------------------------
++DELETE FROM creature_template WHERE `entry`=90001;
++INSERT INTO `creature_template` VALUES ('90001', '0', '0', '0', '0', '0', '26789', '0', '0', '0', 'Santera', 'Profession Skill', '', '9001', '80', '80', '0', '35', '35', '1', '1', '0.75', '1', '1755', '1755', '0', '1504', '1', '10000', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '7', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '', '0', '3', '1', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '0', '0', 'npc_prof', '0');
+diff -Nuar oregoncore-current/src/game/ScriptLoader.cpp oregoncore-pq/src/game/ScriptLoader.cpp
+--- oregoncore-current/src/game/ScriptLoader.cpp	2012-05-20 11:29:49.000000000 -0400
++++ oregoncore-pq/src/game/ScriptLoader.cpp	2012-05-20 11:42:37.000000000 -0400
+@@ -21,6 +21,9 @@
+ 
+ #ifdef SCRIPTS
+ 
++//custom 
++void AddSC_npc_prof();
++
+ //examples
+ //void AddSC_custom_example();
+ //void AddSC_custom_gossip_codebox();
+@@ -393,6 +396,8 @@
+ void AddScripts()
+ {
+ #ifdef SCRIPTS
++
++    AddSC_npc_prof();
+ //    AddSC_custom_example();
+ //    AddSC_custom_gossip_codebox();
+ //    AddSC_test();
+diff -Nuar oregoncore-current/src/oregoncore/oregoncore.conf.dist oregoncore-pq/src/oregoncore/oregoncore.conf.dist
+--- oregoncore-current/src/oregoncore/oregoncore.conf.dist	2012-05-20 11:29:49.000000000 -0400
++++ oregoncore-pq/src/oregoncore/oregoncore.conf.dist	2012-05-20 11:42:37.000000000 -0400
+@@ -1897,6 +1897,34 @@
+ ###############################################################################
+ # CUSTOM SERVER OPTIONS
+ #
++# ProfessionNPC custom config options
++#
++#    ProfessionNPC.OnlyGMs
++#        players are not allowed to use the NPC if this is enabled
++#        Default: 0 - disable
++#                 1 - enable
++#
++#    ProfessionNPC.EnableProfessions
++#        An option will be added to the gossip menu to up your Professions
++#        Default: 1 - enable
++#                 0 - disable
++#
++#    ProfessionNPC.EnableSecondarySkills
++#        An option will be added to the gossip menu to up your SecondarySkills
++#        Default: 1 - enable
++#                 0 - disable
++#
++#    ProfessionNPC.SkillPoints
++#        An option will be added to the gossip menu for SkillPoints you get
++#        from the npc. Make sure to change the SkillPoints number you want the
++#        npc to sell.
++#        Default: 5 - SkillPoints
++#
++#    ProfessionNPC.SkillGoldCost
++#        An option will be added to the gossip menu for SkillPoints Cost.  The
++#        amount is in gold.
++#        Default: 2 - 2 Gold
++#
+ #    PlayerStart.AllReputation
+ #        Players will start with most of the high level reputations that are
+ #         needed for items, mounts etc.
+@@ -1989,6 +2017,11 @@
+ #
+ ###############################################################################
+ 
++ProfessionNPC.OnlyGMs = 0
++ProfessionNPC.EnableProfessions = 1
++ProfessionNPC.EnableSecondarySkills = 1
++ProfessionNPC.SkillPoints = 5
++ProfessionNPC.SkillGoldCost = 2
+ PlayerStart.AllReputation = 0
+ PlayerStart.AllSpells = 0
+ PlayerStart.MapsExplored = 0
+diff -Nuar oregoncore-current/src/scripts/Custom/npc_prof.cpp oregoncore-pq/src/scripts/Custom/npc_prof.cpp
+--- oregoncore-current/src/scripts/Custom/npc_prof.cpp	1969-12-31 19:00:00.000000000 -0500
++++ oregoncore-pq/src/scripts/Custom/npc_prof.cpp	2012-05-20 11:42:37.000000000 -0400
+@@ -0,0 +1,336 @@
++/* Copyright (C) 2006 - 2009 ScriptDev2 <https://scriptdev2.svn.sourceforge.net/>
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ */
++
++/* ScriptData
++SDName: npc_prof
++SD%Complete: 100
++SDComment: Profession Master
++SDCategory: NPC
++EndScriptData */
++
++#include "ScriptPCH.h"
++#include "Config/Config.h"
++
++bool GossipHello_ProfessionNPC(Player* pPlayer, Creature* pCreature)
++{
++	if(sConfig.GetBoolDefault("ProfessionNPC.OnlyGMs", false)) // If ProfessionNPC.OnlyGMs is enabled in oregoncore.conf
++		if (pPlayer->GetSession()->GetSecurity() == SEC_PLAYER)
++		{
++			pCreature->MonsterWhisper("Sorry, I can only trade to game masters.", pPlayer->GetGUID());
++			return true;
++		}
++
++	bool EnableProfessions = sConfig.GetBoolDefault("ProfessionNPC.EnableProfessions", true);
++	bool EnableSecondarySkills = sConfig.GetBoolDefault("ProfessionNPC.EnableSecondarySkills", true);
++
++	// Main Menu for Alliance
++    if (pPlayer->GetTeam() == ALLIANCE)
++	{
++	// Check config if "Professions" is enabled or not
++	if(EnableProfessions)
++		pPlayer->ADD_GOSSIP_ITEM( 7, "Professions ->"        , GOSSIP_SENDER_MAIN, 1000);
++	// Check config if "Secondary Skills" is enabled or not
++	if(EnableSecondarySkills)
++		pPlayer->ADD_GOSSIP_ITEM( 7, "Secondary Skills ->"   , GOSSIP_SENDER_MAIN, 2000);
++	}
++	else // Main Menu for Horde
++	{
++	// Check config if "Professions" is enabled or not
++	if(EnableProfessions)
++		pPlayer->ADD_GOSSIP_ITEM( 7, "Professions ->"        , GOSSIP_SENDER_MAIN, 1000);
++	// Check config if "Secondary Skills" is enabled or not
++	if(EnableSecondarySkills)
++		pPlayer->ADD_GOSSIP_ITEM( 7, "Secondary Skills ->"   , GOSSIP_SENDER_MAIN, 2000);
++	}
++
++    pPlayer->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE,pCreature->GetGUID());
++
++return true;
++}
++
++void SendDefaultMenu_ProfessionNPC(Player* pPlayer, Creature* pCreature, uint32 uiAction)
++{
++
++// Not allow in combat
++if (pPlayer->isInCombat())
++{
++    pPlayer->CLOSE_GOSSIP_MENU();
++    pCreature->MonsterSay("You are in combat!", LANG_UNIVERSAL, NULL);
++	return;
++}
++
++	bool EnableProfessions = sConfig.GetBoolDefault("ProfessionNPC.EnableProfessions", true);
++	bool EnableSecondarySkills = sConfig.GetBoolDefault("ProfessionNPC.EnableSecondarySkills", true);
++
++//Money Check
++if (pPlayer->GetMoney() < (sConfig.GetIntDefault("ProfessionNPC.ProfessionNPC.SkillGoldCost",0)*10000))
++{
++    pPlayer->CLOSE_GOSSIP_MENU();
++    pCreature->MonsterWhisper("You don't have enough money.", pPlayer->GetGUID());
++	return;
++}
++
++switch(uiAction)
++{
++
++case 1000: //Profession
++            pPlayer->ADD_GOSSIP_ITEM( 5, "Alchemy."              , GOSSIP_SENDER_MAIN, 1001);
++            pPlayer->ADD_GOSSIP_ITEM( 5, "Blacksmithing."        , GOSSIP_SENDER_MAIN, 1002);
++            pPlayer->ADD_GOSSIP_ITEM( 5, "Enchanting."           , GOSSIP_SENDER_MAIN, 1003);
++            pPlayer->ADD_GOSSIP_ITEM( 5, "Engineering."          , GOSSIP_SENDER_MAIN, 1004);
++            pPlayer->ADD_GOSSIP_ITEM( 5, "Herbalism."            , GOSSIP_SENDER_MAIN, 1005);
++            pPlayer->ADD_GOSSIP_ITEM( 5, "Jewelcrafting."        , GOSSIP_SENDER_MAIN, 1007);
++            pPlayer->ADD_GOSSIP_ITEM( 5, "Leatherworking."       , GOSSIP_SENDER_MAIN, 1008);
++            pPlayer->ADD_GOSSIP_ITEM( 5, "Mining."               , GOSSIP_SENDER_MAIN, 1009);
++            pPlayer->ADD_GOSSIP_ITEM( 5, "Skinning."             , GOSSIP_SENDER_MAIN, 1010);
++            pPlayer->ADD_GOSSIP_ITEM( 5, "Tailoring."            , GOSSIP_SENDER_MAIN, 1011);
++            pPlayer->ADD_GOSSIP_ITEM( 7, "<- Main Menu"          , GOSSIP_SENDER_MAIN, 3000);
++
++	pPlayer->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE,pCreature->GetGUID());
++break;
++
++case 2000: //Secondary Skills
++            pPlayer->ADD_GOSSIP_ITEM( 5, "Cooking."              , GOSSIP_SENDER_MAIN, 2001);
++            pPlayer->ADD_GOSSIP_ITEM( 5, "First Aid."            , GOSSIP_SENDER_MAIN, 2002);
++            pPlayer->ADD_GOSSIP_ITEM( 5, "Fishing."              , GOSSIP_SENDER_MAIN, 2003);
++            pPlayer->ADD_GOSSIP_ITEM( 7, "<- Main Menu"          , GOSSIP_SENDER_MAIN, 3000);
++
++	pPlayer->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE,pCreature->GetGUID());
++break;
++
++case 3000: //Back To Main Menu
++	// Main Menu for Alliance
++    if (pPlayer->GetTeam() == ALLIANCE)
++	{
++	// Check config if "Professions" is enabled or not
++	if(EnableProfessions)
++		pPlayer->ADD_GOSSIP_ITEM( 7, "Professions ->"        , GOSSIP_SENDER_MAIN, 1000);
++	// Check config if "Secondary Skills" is enabled or not
++	if(EnableSecondarySkills)
++		pPlayer->ADD_GOSSIP_ITEM( 7, "Secondary Skills ->"   , GOSSIP_SENDER_MAIN, 2000);
++	}
++	else // Main Menu for Horde
++	{
++	// Check config if "Professions" is enabled or not
++	if(EnableProfessions)
++		pPlayer->ADD_GOSSIP_ITEM( 7, "Professions ->"        , GOSSIP_SENDER_MAIN, 1000);
++	// Check config if "Secondary Skills" is enabled or not
++	if(EnableSecondarySkills)
++		pPlayer->ADD_GOSSIP_ITEM( 7, "Secondary Skills ->"   , GOSSIP_SENDER_MAIN, 2000);
++	}
++
++	pPlayer->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE,pCreature->GetGUID());
++break;
++
++//////////////////////////////////////////////////Professions///////////////////////////////////////////////////////////////
++
++case 1001: // Alchemy
++	if(!pPlayer->UpdateSkill(171,0))
++      {
++		pCreature->MonsterWhisper("You don't have this skill or you allready have the maximum skill value $C.", pPlayer->GetGUID());
++		GossipHello_ProfessionNPC(pPlayer, pCreature);
++		return;
++	}
++
++	pPlayer->UpdateSkill(171,(sConfig.GetIntDefault("ProfessionNPC.SkillPoints",0)));
++	pPlayer->ModifyMoney(-(sConfig.GetIntDefault("ProfessionNPC.SkillGoldCost",0)*10000));
++	pPlayer->CLOSE_GOSSIP_MENU();
++break;
++
++case 1002: // Blacksmithing
++	if(!pPlayer->UpdateSkill(164,0))
++      {
++		pCreature->MonsterWhisper("You don't have this skill or you allready have the maximum skill value $C.", pPlayer->GetGUID());
++		GossipHello_ProfessionNPC(pPlayer, pCreature);
++		return;
++	}
++
++	pPlayer->UpdateSkill(164,(sConfig.GetIntDefault("ProfessionNPC.SkillPoints",0)));
++	pPlayer->ModifyMoney(-(sConfig.GetIntDefault("ProfessionNPC.SkillGoldCost",0)*10000));
++	pPlayer->CLOSE_GOSSIP_MENU();
++break;
++
++case 1003: // Enchanting
++	if(!pPlayer->UpdateSkill(333,0))
++      {
++		pCreature->MonsterWhisper("You don't have this skill or you allready have the maximum skill value $C.", pPlayer->GetGUID());
++		GossipHello_ProfessionNPC(pPlayer, pCreature);
++		return;
++	}
++
++	pPlayer->UpdateSkill(333,(sConfig.GetIntDefault("ProfessionNPC.SkillPoints",0)));
++	pPlayer->ModifyMoney(-(sConfig.GetIntDefault("ProfessionNPC.SkillGoldCost",0)*10000));
++	pPlayer->CLOSE_GOSSIP_MENU();
++break;
++
++case 1004: // Engineering
++	if(!pPlayer->UpdateSkill(202,0))
++      {
++		pCreature->MonsterWhisper("You don't have this skill or you allready have the maximum skill value $C.", pPlayer->GetGUID());
++		GossipHello_ProfessionNPC(pPlayer, pCreature);
++		return;
++	}
++
++	pPlayer->UpdateSkill(202,(sConfig.GetIntDefault("ProfessionNPC.SkillPoints",0)));
++	pPlayer->ModifyMoney(-(sConfig.GetIntDefault("ProfessionNPC.SkillGoldCost",0)*10000));
++	pPlayer->CLOSE_GOSSIP_MENU();
++break;
++
++case 1005: // Herbalism
++	if(!pPlayer->UpdateSkill(182,0))
++      {
++		pCreature->MonsterWhisper("You don't have this skill or you allready have the maximum skill value $C.", pPlayer->GetGUID());
++		GossipHello_ProfessionNPC(pPlayer, pCreature);
++		return;
++	}
++
++	pPlayer->UpdateSkill(182,(sConfig.GetIntDefault("ProfessionNPC.SkillPoints",0)));
++	pPlayer->ModifyMoney(-(sConfig.GetIntDefault("ProfessionNPC.SkillGoldCost",0)*10000));
++	pPlayer->CLOSE_GOSSIP_MENU();
++break;
++
++case 1007: // Jewelcrafting
++	if(!pPlayer->UpdateSkill(755,0))
++      {
++		pCreature->MonsterWhisper("You don't have this skill or you allready have the maximum skill value $C.", pPlayer->GetGUID());
++		GossipHello_ProfessionNPC(pPlayer, pCreature);
++		return;
++	}
++
++	pPlayer->UpdateSkill(755,(sConfig.GetIntDefault("ProfessionNPC.SkillPoints",0)));
++	pPlayer->ModifyMoney(-(sConfig.GetIntDefault("ProfessionNPC.SkillGoldCost",0)*10000));
++	pPlayer->CLOSE_GOSSIP_MENU();
++break;
++
++case 1008: // Leatherworking
++	if(!pPlayer->UpdateSkill(165,0))
++      {
++		pCreature->MonsterWhisper("You don't have this skill or you allready have the maximum skill value $C.", pPlayer->GetGUID());
++		GossipHello_ProfessionNPC(pPlayer, pCreature);
++		return;
++	}
++
++	pPlayer->UpdateSkill(165,(sConfig.GetIntDefault("ProfessionNPC.SkillPoints",0)));
++	pPlayer->ModifyMoney(-(sConfig.GetIntDefault("ProfessionNPC.SkillGoldCost",0)*10000));
++	pPlayer->CLOSE_GOSSIP_MENU();
++break;
++
++case 1009: // Mining
++	if(!pPlayer->UpdateSkill(186,0))
++      {
++		pCreature->MonsterWhisper("You don't have this skill or you allready have the maximum skill value $C.", pPlayer->GetGUID());
++		GossipHello_ProfessionNPC(pPlayer, pCreature);
++		return;
++	}
++
++	pPlayer->UpdateSkill(186,(sConfig.GetIntDefault("ProfessionNPC.SkillPoints",0)));
++	pPlayer->ModifyMoney(-(sConfig.GetIntDefault("ProfessionNPC.SkillGoldCost",0)*10000));
++	pPlayer->CLOSE_GOSSIP_MENU();
++break;
++
++case 1010: // Skinning
++	if(!pPlayer->UpdateSkill(393,0))
++      {
++		pCreature->MonsterWhisper("You don't have this skill or you allready have the maximum skill value $C.", pPlayer->GetGUID());
++		GossipHello_ProfessionNPC(pPlayer, pCreature);
++		return;
++	}
++
++	pPlayer->UpdateSkill(393,(sConfig.GetIntDefault("ProfessionNPC.SkillPoints",0)));
++	pPlayer->ModifyMoney(-(sConfig.GetIntDefault("ProfessionNPC.SkillGoldCost",0)*10000));
++	pPlayer->CLOSE_GOSSIP_MENU();
++break;
++
++case 1011: // Tailoring
++	if(!pPlayer->UpdateSkill(197,0))
++      {
++		pCreature->MonsterWhisper("You don't have this skill or you allready have the maximum skill value $C.", pPlayer->GetGUID());
++		GossipHello_ProfessionNPC(pPlayer, pCreature);
++		return;
++	}
++
++	pPlayer->UpdateSkill(197,(sConfig.GetIntDefault("ProfessionNPC.SkillPoints",0)));
++	pPlayer->ModifyMoney(-(sConfig.GetIntDefault("ProfessionNPC.SkillGoldCost",0)*10000));
++	pPlayer->CLOSE_GOSSIP_MENU();
++break;
++
++//////////////////////////////////////////////////Secondary Skills///////////////////////////////////////////////////////////////
++
++case 2001: // Cooking
++	if(!pPlayer->UpdateSkill(185,0))
++      {
++		pCreature->MonsterWhisper("You don't have this skill or you allready have the maximum skill value $C.", pPlayer->GetGUID());
++		GossipHello_ProfessionNPC(pPlayer, pCreature);
++		return;
++	}
++
++	pPlayer->UpdateSkill(185,(sConfig.GetIntDefault("ProfessionNPC.SkillPoints",0)));
++	pPlayer->ModifyMoney(-(sConfig.GetIntDefault("ProfessionNPC.SkillGoldCost",0)*10000));
++	pPlayer->CLOSE_GOSSIP_MENU();
++break;
++
++case 2002: // First Aid
++	if(!pPlayer->UpdateSkill(129,0))
++      {
++		pCreature->MonsterWhisper("You don't have this skill or you allready have the maximum skill value $C.", pPlayer->GetGUID());
++		GossipHello_ProfessionNPC(pPlayer, pCreature);
++		return;
++	}
++
++	pPlayer->UpdateSkill(129,(sConfig.GetIntDefault("ProfessionNPC.SkillPoints",0)));
++	pPlayer->ModifyMoney(-(sConfig.GetIntDefault("ProfessionNPC.SkillGoldCost",0)*10000));
++	pPlayer->CLOSE_GOSSIP_MENU();
++break;
++
++case 2003: // Fishing
++	if(!pPlayer->UpdateSkill(356,0))
++      {
++		pCreature->MonsterWhisper("You don't have this skill or you allready have the maximum skill value $C.", pPlayer->GetGUID());
++		GossipHello_ProfessionNPC(pPlayer, pCreature);
++		return;
++	}
++
++	pPlayer->UpdateSkill(356,(sConfig.GetIntDefault("ProfessionNPC.SkillPoints",0)));
++	pPlayer->ModifyMoney(-(sConfig.GetIntDefault("ProfessionNPC.SkillGoldCost",0)*10000));
++	pPlayer->CLOSE_GOSSIP_MENU();
++break;
++
++ pPlayer->CLOSE_GOSSIP_MENU();
++
++} // end of switch
++} //end of function
++
++
++
++bool GossipSelect_ProfessionNPC(Player* pPlayer, Creature* pCreature, uint32 uiSender, uint32 uiAction)
++{
++	// Main menu
++	if (uiSender == GOSSIP_SENDER_MAIN)
++	SendDefaultMenu_ProfessionNPC(pPlayer, pCreature, uiAction);
++
++return true;
++}
++
++void AddSC_npc_prof()
++{
++    Script *newscript;
++
++    newscript = new Script;
++    newscript->Name = "npc_prof";
++    newscript->pGossipHello = &GossipHello_ProfessionNPC;
++    newscript->pGossipSelect = &GossipSelect_ProfessionNPC;
++    newscript->RegisterSelf();
++}

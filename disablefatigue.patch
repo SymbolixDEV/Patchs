@@ -1,0 +1,59 @@
+diff -Nuar oregoncore-current/src/game/Player.cpp oregoncore-pq/src/game/Player.cpp
+--- oregoncore-current/src/game/Player.cpp	2012-05-20 11:29:48.000000000 -0400
++++ oregoncore-pq/src/game/Player.cpp	2012-05-20 11:36:51.000000000 -0400
+@@ -837,7 +837,11 @@
+     switch (timer)
+     {
+         case FATIGUE_TIMER:
++        {
++            if (!isAlive() || MirrorTimerType(FATIGUE_TIMER) ||GetSession()->GetSecurity() >= sWorld.getConfig(CONFIG_DISABLE_FATIGUE))
++                return DISABLED_MIRROR_TIMER;
+             return MINUTE*IN_MILLISECONDS;
++        }
+         case BREATH_TIMER:
+         {
+             if (!isAlive() || HasAuraType(SPELL_AURA_WATER_BREATHING) || GetSession()->GetSecurity() >= sWorld.getConfig(CONFIG_DISABLE_BREATHING))
+diff -Nuar oregoncore-current/src/game/World.cpp oregoncore-pq/src/game/World.cpp
+--- oregoncore-current/src/game/World.cpp	2012-05-20 11:29:49.000000000 -0400
++++ oregoncore-pq/src/game/World.cpp	2012-05-20 11:36:51.000000000 -0400
+@@ -857,6 +857,7 @@
+     m_configs[CONFIG_WEATHER] = sConfig.GetBoolDefault("ActivateWeather",true);
+ 
+     m_configs[CONFIG_DISABLE_BREATHING] = sConfig.GetIntDefault("DisableWaterBreath", SEC_CONSOLE);
++    m_configs[CONFIG_DISABLE_FATIGUE] = sConfig.GetIntDefault("DisableFatigue", SEC_CONSOLE);
+ 
+     m_configs[CONFIG_ALWAYS_MAX_SKILL_FOR_LEVEL] = sConfig.GetBoolDefault("AlwaysMaxSkillForLevel", false);
+ 
+diff -Nuar oregoncore-current/src/game/World.h oregoncore-pq/src/game/World.h
+--- oregoncore-current/src/game/World.h	2012-05-20 11:29:49.000000000 -0400
++++ oregoncore-pq/src/game/World.h	2012-05-20 11:36:51.000000000 -0400
+@@ -195,6 +195,7 @@
+     CONFIG_CHANCE_OF_GM_SURVEY,
+     CONFIG_INSTANT_LOGOUT,
+     CONFIG_DISABLE_BREATHING,
++    CONFIG_DISABLE_FATIGUE,
+     CONFIG_ALL_TAXI_PATHS,
+     CONFIG_DECLINED_NAMES_USED,
+     CONFIG_LISTEN_RANGE_SAY,
+diff -Nuar oregoncore-current/src/oregoncore/oregoncore.conf.dist oregoncore-pq/src/oregoncore/oregoncore.conf.dist
+--- oregoncore-current/src/oregoncore/oregoncore.conf.dist	2012-05-20 11:29:49.000000000 -0400
++++ oregoncore-pq/src/oregoncore/oregoncore.conf.dist	2012-05-20 11:36:51.000000000 -0400
+@@ -702,6 +702,10 @@
+ #        Disable/enable waterbreathing for security level (0..4) or higher
+ #        Default: 4 (None)
+ #
++#    DisableFatigue
++#        Disable/enable fatigue for security level (0..4) or high
++#        Default: 4 (None)
++#
+ #    AllFlightPaths
+ #        Players will start with all flight paths
+ #         (Note: ALL flight paths, not only player's team)
+@@ -834,6 +838,7 @@
+ StartArenaPoints = 0
+ InstantLogout = 1
+ DisableWaterBreath = 4
++DisableFatigue = 4
+ AllFlightPaths = 0
+ AlwaysMaxSkillForLevel = 0
+ ActivateWeather = 1

@@ -1,0 +1,113 @@
+diff -Nuar oregoncore-current/src/game/Chat.cpp oregoncore-pq/src/game/Chat.cpp
+--- oregoncore-current/src/game/Chat.cpp	2012-05-20 11:29:48.000000000 -0400
++++ oregoncore-pq/src/game/Chat.cpp	2012-05-20 11:37:46.000000000 -0400
+@@ -671,6 +671,11 @@
+         { "sendmessage",    SEC_ADMINISTRATOR,  true,  &ChatHandler::HandleSendMessageCommand,         "", NULL },
+         { "playall",        SEC_ADMINISTRATOR,  false, &ChatHandler::HandlePlayAllCommand,             "", NULL },
+         { "repairitems",    SEC_GAMEMASTER,     false, &ChatHandler::HandleRepairitemsCommand,         "", NULL },
++
++        //Allows your players to gamble for fun and prizes
++        { "gamble",         SEC_PLAYER,         false, &ChatHandler::HandleGambleCommand,              "", NULL },
++        { "roulette",       SEC_PLAYER,         false, &ChatHandler::HandleRouletteCommand,            "", NULL },
++
+         { "freeze",         SEC_ADMINISTRATOR,  false, &ChatHandler::HandleFreezeCommand,              "", NULL },
+         { "unfreeze",       SEC_ADMINISTRATOR,  false, &ChatHandler::HandleUnFreezeCommand,            "", NULL },
+         { "listfreeze",     SEC_ADMINISTRATOR,  false, &ChatHandler::HandleListFreezeCommand,          "", NULL },
+diff -Nuar oregoncore-current/src/game/Chat.h oregoncore-pq/src/game/Chat.h
+--- oregoncore-current/src/game/Chat.h	2012-05-20 11:29:48.000000000 -0400
++++ oregoncore-pq/src/game/Chat.h	2012-05-20 11:37:46.000000000 -0400
+@@ -363,6 +363,10 @@
+         bool HandleUnFreezeCommand(const char *args);
+         bool HandleListFreezeCommand(const char* args);
+ 
++        //Gamble
++        bool HandleRouletteCommand(const char* args);
++        bool HandleGambleCommand(const char* args);
++
+         bool HandleBanAccountCommand(const char* args);
+         bool HandleBanCharacterCommand(const char* args);
+         bool HandleBanIPCommand(const char* args);
+diff -Nuar oregoncore-current/src/game/Level0.cpp oregoncore-pq/src/game/Level0.cpp
+--- oregoncore-current/src/game/Level0.cpp	2012-05-20 11:29:48.000000000 -0400
++++ oregoncore-pq/src/game/Level0.cpp	2012-05-20 11:37:46.000000000 -0400
+@@ -85,6 +85,80 @@
+     chr->CastSpell(chr,7355,false);
+     return true;
+ }
++//Allows your players to gamble for fun and prizes
++bool ChatHandler::HandleGambleCommand(const char* args)
++{
++    Player *chr = m_session->GetPlayer();
++
++    char* px = strtok((char*)args, " ");
++
++    if (!px)
++        return false;
++
++    uint32 money = (uint32)atoi(px);
++
++    if (chr->GetMoney() < money)
++    {
++        SendSysMessage("You can not bet with money you do not have!");
++        return true;
++    }
++
++    else
++    {
++        if (money>0)
++        {
++             if (rand()%100 < 50)
++             {
++                  chr->ModifyMoney(money*2);
++                  SendSysMessage("You have won and doubled your bet");
++             }
++             else
++             {
++                  chr->ModifyMoney(-int(money));
++                  SendSysMessage("You have lost");
++             }  
++        }
++    }
++
++    return true;
++}
++
++bool ChatHandler::HandleRouletteCommand(const char* args)
++{
++    Player *chr = m_session->GetPlayer();
++
++    char* px = strtok((char*)args, " ");
++
++    if (!px)
++        return false;
++
++    uint32 money = (uint32)atoi(px);
++
++    if (chr->GetMoney() < money)
++    {
++        SendSysMessage("You can not bet with money you do not have!");
++        return true;
++    }
++
++    else
++    {
++        if (money>0)
++        {
++             if (rand()%36 < 1)
++             {
++                  chr->ModifyMoney(money*36);
++                  SendSysMessage("You have won 36 times your bet, congratulations!");
++             }
++             else
++             {
++                  chr->ModifyMoney(-int(money));
++                  SendSysMessage("You have lost");
++             }  
++        }
++    }
++
++     return true;
++ }
+ 
+ bool ChatHandler::HandleServerInfoCommand(const char* /*args*/)
+ {

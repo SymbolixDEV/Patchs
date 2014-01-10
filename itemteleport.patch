@@ -1,0 +1,137 @@
+diff -Nuar oregoncore-current/sql/oc-patch/world-itemteleport.sql oregoncore-pq/sql/oc-patch/world-itemteleport.sql
+--- oregoncore-current/sql/oc-patch/world-itemteleport.sql	1969-12-31 19:00:00.000000000 -0500
++++ oregoncore-pq/sql/oc-patch/world-itemteleport.sql	2012-05-20 11:39:09.000000000 -0400
+@@ -0,0 +1,57 @@
++
++CREATE TABLE IF NOT EXISTS `item_teleports` (
++  `entry` int(10) unsigned NOT NULL,
++  `mapid` int(10) unsigned NOT NULL,
++  `x_pos` float NOT NULL,
++  `y_pos` float NOT NULL,
++  `z_pos` float NOT NULL,
++  `orientation` float NOT NULL,
++  `name` varchar(30) default NULL,
++  PRIMARY KEY  (`entry`)
++) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='Optional table to create custom item portals';
++
++--
++-- Dumping data for table `item_teleports`
++--
++
++INSERT INTO `item_teleports` (`entry`, `mapid`, `x_pos`, `y_pos`, `z_pos`, `orientation`, `name`) VALUES
++(100010, 1, 16234.7, 16308.5, 20.844, 5.3328, 'GM Island'),
++(100022, 1, 9950.73, 2605.7, 1316.18, 3.72, 'Darnassus'),
++(100023, 530, -3956.9, -11660.2, -138.75, 2.25, 'Exodar'),
++(100024, 0, -4830.45, -1188.09, 502.46, 1.01, 'Ironforge'),
++(100025, 1, 1582.05, -4418.27, 8.05, 0.38, 'Orgrimmar'),
++(100026, 530, 9474.99, -7295.07, 14.31, 5.92, 'Silvermoon City'),
++(100027, 0, -8843.74, 611.06, 92.76, 0.75, 'Stormwind City'),
++(100021, 1, -1242.29, 71.16, 128.26, 5.96, 'Thunder Bluff'),
++(100020, 0, 1581.04, 276.09, -43.1027, 6.13, 'Undercity'),
++(100018, 530, -1833.9, 5371.17, -12.428, 1.92025, 'Shattrath City'),
++(100011, 1, 4600.31, -3866.36, 944.185, 1.04615, 'Hyjal'),
++(100012, 0, -11069, -1795, 53.7249, 2.36876, 'Karazhan Crypt'),
++(100013, 1, -11372.4, -4721.3, 5.64663, 0.04398, 'Tanaris Islands'),
++(100014, 0, -4845, -1082.69, 495.58, 3.08426, 'Old Ironforge'),
++(100015, 0, -8644.49, 584.137, 95.6914, 1.87553, 'Stormwind Prison'),
++(100016, 0, -4033.44, -1464.35, 169.863, 1.16318, 'Wetlands Farm');
++
++--
++-- Dumping data for table `item_template`
++--
++
++INSERT INTO `item_template` (`entry`, `class`, `subclass`, `unk0`, `name`, `displayid`, `Quality`, `Flags`, `BuyCount`, `BuyPrice`, `SellPrice`, `InventoryType`, `AllowableClass`, `AllowableRace`, `ItemLevel`, `RequiredLevel`, `RequiredSkill`, `RequiredSkillRank`, `requiredspell`, `requiredhonorrank`, `RequiredCityRank`, `RequiredReputationFaction`, `RequiredReputationRank`, `maxcount`, `stackable`, `ContainerSlots`, `stat_type1`, `stat_value1`, `stat_type2`, `stat_value2`, `stat_type3`, `stat_value3`, `stat_type4`, `stat_value4`, `stat_type5`, `stat_value5`, `stat_type6`, `stat_value6`, `stat_type7`, `stat_value7`, `stat_type8`, `stat_value8`, `stat_type9`, `stat_value9`, `stat_type10`, `stat_value10`, `dmg_min1`, `dmg_max1`, `dmg_type1`, `dmg_min2`, `dmg_max2`, `dmg_type2`, `dmg_min3`, `dmg_max3`, `dmg_type3`, `dmg_min4`, `dmg_max4`, `dmg_type4`, `dmg_min5`, `dmg_max5`, `dmg_type5`, `armor`, `holy_res`, `fire_res`, `nature_res`, `frost_res`, `shadow_res`, `arcane_res`, `delay`, `ammo_type`, `RangedModRange`, `spellid_1`, `spelltrigger_1`, `spellcharges_1`, `spellppmRate_1`, `spellcooldown_1`, `spellcategory_1`, `spellcategorycooldown_1`, `spellid_2`, `spelltrigger_2`, `spellcharges_2`, `spellppmRate_2`, `spellcooldown_2`, `spellcategory_2`, `spellcategorycooldown_2`, `spellid_3`, `spelltrigger_3`, `spellcharges_3`, `spellppmRate_3`, `spellcooldown_3`, `spellcategory_3`, `spellcategorycooldown_3`, `spellid_4`, `spelltrigger_4`, `spellcharges_4`, `spellppmRate_4`, `spellcooldown_4`, `spellcategory_4`, `spellcategorycooldown_4`, `spellid_5`, `spelltrigger_5`, `spellcharges_5`, `spellppmRate_5`, `spellcooldown_5`, `spellcategory_5`, `spellcategorycooldown_5`, `bonding`, `description`, `PageText`, `LanguageID`, `PageMaterial`, `startquest`, `lockid`, `Material`, `sheath`, `RandomProperty`, `RandomSuffix`, `block`, `itemset`, `MaxDurability`, `area`, `Map`, `BagFamily`, `TotemCategory`, `socketColor_1`, `socketContent_1`, `socketColor_2`, `socketContent_2`, `socketColor_3`, `socketContent_3`, `socketBonus`, `GemProperties`, `RequiredDisenchantSkill`, `ArmorDamageModifier`, `ScriptName`, `DisenchantID`, `FoodType`, `minMoneyLoot`, `maxMoneyLoot`, `Duration`) VALUES
++(100010, 15, 4, -1, 'Portal to GM Island', 14993, 4, 524353, 1, 0, 0, 0, -1, -1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 36967, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 3, 'This magic tome will transport you to the legendary home of the GameMasters.', 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 'item_teleport', 0, 0, 0, 0, 0),
++(100011, 15, 4, -1, 'Portal to Hyjal', 14993, 4, 524353, 1, 0, 0, 0, -1, -1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 36967, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 3, 'This magic tome will transport you to Hyjal.', 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 'item_teleport', 0, 0, 0, 0, 0),
++(100012, 15, 4, -1, 'Portal to Karazhan Crypt', 14993, 4, 524353, 1, 0, 0, 0, -1, -1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 36967, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 3, 'This magic tome will transport you to Karazhan Crypt.', 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 'item_teleport', 0, 0, 0, 0, 0),
++(100013, 15, 4, -1, 'Portal to the Tanaris Islands', 14993, 4, 524353, 1, 0, 0, 0, -1, -1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 36967, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 3, 'This magic tome will transport you to the Tanaris Islands.', 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 'item_teleport', 0, 0, 0, 0, 0),
++(100014, 15, 4, -1, 'Portal to Old Ironforge', 14993, 4, 524353, 1, 0, 0, 0, -1, -1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 36967, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 3, 'This magic tome will transport you to Old Ironforge.', 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 'item_teleport', 0, 0, 0, 0, 0),
++(100015, 15, 4, -1, 'Portal to Stormwind Prison', 14993, 4, 524353, 1, 0, 0, 0, -1, -1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 36967, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 3, 'This magic tome will transport you to Stormwind Prison.', 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 'item_teleport', 0, 0, 0, 0, 0),
++(100016, 15, 4, -1, 'Portal to Wetlands Farm', 14993, 4, 524353, 1, 0, 0, 0, -1, -1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 36967, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 3, 'This magic tome will transport you to the Wetlands Farm.', 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 'item_teleport', 0, 0, 0, 0, 0),
++(100018, 15, 4, -1, 'Portal to Shattrath City', 14993, 4, 524353, 1, 0, 0, 0, -1, -1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 36967, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 3, 'This magic tome will transport you to Shattrath City.', 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 'item_teleport', 0, 0, 0, 0, 0),
++(100020, 15, 4, -1, 'Portal to Undercity', 14993, 4, 524353, 1, 0, 0, 0, -1, -1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 36967, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 3, 'This magic tome will transport you to Undercity.', 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 'item_teleport', 0, 0, 0, 0, 0),
++(100021, 15, 4, -1, 'Portal to Thunder Bluff', 14993, 4, 524353, 1, 0, 0, 0, -1, -1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 36967, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 3, 'This magic tome will transport you to Thunder Bluff.', 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 'item_teleport', 0, 0, 0, 0, 0),
++(100022, 15, 4, -1, 'Portal to Darnassus', 14993, 4, 524353, 1, 0, 0, 0, -1, -1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 36967, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 3, 'This magic tome will transport you to Darnassus.', 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 'item_teleport', 0, 0, 0, 0, 0),
++(100023, 15, 4, -1, 'Portal to The Exodar', 14993, 4, 524353, 1, 0, 0, 0, -1, -1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 36967, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 3, 'This magic tome will transport you to The Exodar.', 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 'item_teleport', 0, 0, 0, 0, 0),
++(100024, 15, 4, -1, 'Portal to Ironforge', 14993, 4, 524353, 1, 0, 0, 0, -1, -1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 36967, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 3, 'This magic tome will transport you to Ironforge.', 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 'item_teleport', 0, 0, 0, 0, 0),
++(100025, 15, 4, -1, 'Portal to Orgrimmar', 14993, 4, 524353, 1, 0, 0, 0, -1, -1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 36967, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 3, 'This magic tome will transport you to Orgrimmar.', 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 'item_teleport', 0, 0, 0, 0, 0),
++(100026, 15, 4, -1, 'Portal to Silvermoon City', 14993, 4, 524353, 1, 0, 0, 0, -1, -1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 36967, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 3, 'This magic tome will transport you to Silvermoon City.', 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 'item_teleport', 0, 0, 0, 0, 0),
++(100027, 15, 4, -1, 'Portal to Stormwind City', 14993, 4, 524353, 1, 0, 0, 0, -1, -1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 36967, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 0, 0, 0, 0, -1, 0, -1, 3, 'This magic tome will transport you to Stormwind City.', 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 'item_teleport', 0, 0, 0, 0, 0);
++
++
+diff -Nuar oregoncore-current/src/game/ScriptLoader.cpp oregoncore-pq/src/game/ScriptLoader.cpp
+--- oregoncore-current/src/game/ScriptLoader.cpp	2012-05-20 11:29:49.000000000 -0400
++++ oregoncore-pq/src/game/ScriptLoader.cpp	2012-05-20 11:39:09.000000000 -0400
+@@ -21,6 +21,9 @@
+ 
+ #ifdef SCRIPTS
+ 
++//custom
++void AddSC_item_teleport();
++
+ //examples
+ //void AddSC_custom_example();
+ //void AddSC_custom_gossip_codebox();
+@@ -393,6 +396,10 @@
+ void AddScripts()
+ {
+ #ifdef SCRIPTS
++
++    //Custom
++    AddSC_item_teleport();
++
+ //    AddSC_custom_example();
+ //    AddSC_custom_gossip_codebox();
+ //    AddSC_test();
+diff -Nuar oregoncore-current/src/scripts/Custom/item_teleport.cpp oregoncore-pq/src/scripts/Custom/item_teleport.cpp
+--- oregoncore-current/src/scripts/Custom/item_teleport.cpp	1969-12-31 19:00:00.000000000 -0500
++++ oregoncore-pq/src/scripts/Custom/item_teleport.cpp	2012-05-20 11:39:09.000000000 -0400
+@@ -0,0 +1,48 @@
++/* ScriptData
++SDName: Item_Teleport
++SD%Complete: 100
++SDComment: Used for Teleport Item Scripts
++SDCategory: Items
++EndScriptData */
++
++#include "ScriptPCH.h"
++#include <cstring>
++
++bool ItemUse_item_teleport(Player *player, Item* _Item, SpellCastTargets const& targets)
++{
++    // Declare variables
++    float x_pos, y_pos, z_pos, o_pos;
++    uint32 mapid;
++    uint32 itemId = _Item->GetEntry();
++    extern DatabaseType WorldDatabase;
++
++    // Fetch the coordinates
++    QueryResult_AutoPtr result = WorldDatabase.PQuery("SELECT `mapid`, `X_pos`, `Y_pos`, `Z_pos`, `orientation`  FROM `item_teleports` WHERE `entry` = '%i' LIMIT 1",itemId);
++    if(result)
++    {
++        Field *fields = result->Fetch();
++        // Read coords from the query result
++        mapid = fields[0].GetInt32();
++        x_pos = fields[1].GetFloat();
++        y_pos = fields[2].GetFloat();
++        z_pos = fields[3].GetFloat();
++        o_pos = fields[4].GetFloat();
++        // Teleport the player and show info in log
++        player->TeleportTo(mapid, x_pos, y_pos, z_pos, o_pos);
++        outstring_log ("Teleport Activated: %i (m:%i x:%f y:%f z:%f o:%f)",itemId,mapid,x_pos,y_pos,z_pos,o_pos);
++        return true;
++    } else {
++        // Teleport failed - show info in log
++        outstring_log ("Teleport Failed: %i (m:%i x:%f y:%f z:%f o:%f)",itemId,mapid,x_pos,y_pos,z_pos,o_pos);
++    }
++}
++
++void AddSC_item_teleport()
++{
++    Script *newscript;
++
++    newscript = new Script;
++    newscript->Name="item_teleport";
++    newscript->pItemUse = &ItemUse_item_teleport;
++    newscript->RegisterSelf();
++}

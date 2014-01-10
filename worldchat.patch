@@ -1,0 +1,280 @@
+diff -Nuar oregoncore-current/src/game/Channel.cpp oregoncore-pq/src/game/Channel.cpp
+--- oregoncore-current/src/game/Channel.cpp	2012-05-20 11:29:48.000000000 -0400
++++ oregoncore-pq/src/game/Channel.cpp	2012-05-20 11:42:49.000000000 -0400
+@@ -54,14 +54,22 @@
+ void Channel::Join(uint64 p, const char *pass)
+ {
+     WorldPacket data;
++
++    std::string worldChatChannelName = sWorld.GetWorldChatChannelName();
++    uint64 worldChatOwnerGuid = sWorld.GetWorldChatOwnerGuid();
++    uint64 worldChatIdleGuid = sWorld.GetWorldChatIdleGuid();
++
+     if (IsOn(p))
+     {
+-        if (!IsConstant())                                   // non send error message for built-in channels
++        if ( m_name != worldChatChannelName ) 
+         {
+-            MakePlayerAlreadyMember(&data, p);
+-            SendToOne(&data, p);
++            if (!IsConstant())                                   // non send error message for built-in channels
++            {
++                MakePlayerAlreadyMember(&data, p);
++                SendToOne(&data, p);
++            }
++            return;
+         }
+-        return;
+     }
+ 
+     if (IsBanned(p))
+@@ -115,16 +123,34 @@
+ 
+     JoinNotify(p);
+ 
+-    // if no owner first logged will become
+-    if (!IsConstant() && !m_ownerGUID)
++    if ( m_name != worldChatChannelName )  // WorldChat is handled in a special way ;-)
+     {
+-        SetOwner(p, (players.size() > 1 ? true : false));
+-        players[p].SetModerator(true);
++        // if no owner first logged will become
++        if (!IsConstant() && !m_ownerGUID)
++        {
++            SetOwner(p, (players.size() > 1 ? true : false));
++            players[p].SetModerator(true);
++        }
++    } else {
++        // If player is WorldChat owner, make them channel owner and mod, otherwise make owner/mod Idle
++        if ( p == worldChatOwnerGuid )
++        {
++            SetOwner(worldChatOwnerGuid, true);
++            players[worldChatOwnerGuid].SetModerator(true);
++        } else {
++            SetOwner(worldChatIdleGuid, true);
++            players[worldChatIdleGuid].SetModerator(true);
++        }
+     }
+ }
+ 
+ void Channel::Leave(uint64 p, bool send)
+ {
++
++    std::string worldChatChannelName = sWorld.GetWorldChatChannelName();
++    uint64 worldChatOwnerGuid = sWorld.GetWorldChatOwnerGuid();
++    uint64 worldChatIdleGuid = sWorld.GetWorldChatIdleGuid();
++
+     if (!IsOn(p))
+     {
+         if (send)
+@@ -162,9 +188,23 @@
+ 
+         if (changeowner)
+         {
+-            uint64 newowner = !players.empty() ? players.begin()->second.player : 0;
+-            players[newowner].SetModerator(true);
+-            SetOwner(newowner);
++            if ( m_name != worldChatChannelName ) //  World chat ownership must be controlled
++            {
++                uint64 newowner = !players.empty() ? players.begin()->second.player : 0;
++                players[newowner].SetModerator(true);
++                SetOwner(newowner);
++            } else {
++                if ( IsOn(worldChatOwnerGuid) ) 
++                {
++                    uint64 newowner = worldChatOwnerGuid;
++                    players[newowner].SetModerator(true);
++                    SetOwner(newowner);
++                } else {
++                    uint64 newowner = worldChatIdleGuid;
++                    players[newowner].SetModerator(true);
++                    SetOwner(newowner);
++                }
++            }
+         }
+     }
+ }
+@@ -272,6 +312,9 @@
+ 
+ void Channel::Password(uint64 p, const char *pass)
+ {
++
++    std::string worldChatChannelName = sWorld.GetWorldChatChannelName();
++
+     uint32 sec = 0;
+     Player *plr = objmgr.GetPlayer(p);
+     if (plr)
+@@ -291,11 +334,14 @@
+     }
+     else
+     {
+-        m_password = pass;
++        if ( m_name != worldChatChannelName ) // No password for world chat
++        {
++            m_password = pass;
+ 
+-        WorldPacket data;
+-        MakePasswordChanged(&data, p);
+-        SendToAll(&data);
++            WorldPacket data;
++            MakePasswordChanged(&data, p);
++            SendToAll(&data);
++        }
+     }
+ }
+ 
+@@ -369,6 +415,9 @@
+ 
+ void Channel::SetOwner(uint64 p, const char *newname)
+ {
++
++    std::string worldChatChannelName = sWorld.GetWorldChatChannelName();
++
+     Player *plr = objmgr.GetPlayer(p);
+     if (!plr)
+         return;
+@@ -377,10 +426,13 @@
+ 
+     if (!IsOn(p))
+     {
+-        WorldPacket data;
+-        MakeNotMember(&data);
+-        SendToOne(&data, p);
+-        return;
++        if ( m_name != worldChatChannelName )
++        {
++            WorldPacket data;
++            MakeNotMember(&data);
++            SendToOne(&data, p);
++            return;
++        }
+     }
+ 
+     if (sec < SEC_GAMEMASTER && p != m_ownerGUID)
+@@ -394,18 +446,24 @@
+     Player *newp = objmgr.GetPlayer(newname);
+     if (newp == NULL || !IsOn(newp->GetGUID()))
+     {
+-        WorldPacket data;
+-        MakePlayerNotFound(&data, newname);
+-        SendToOne(&data, p);
+-        return;
++        if ( m_name != worldChatChannelName )
++        {
++            WorldPacket data;
++            MakePlayerNotFound(&data, newname);
++            SendToOne(&data, p);
++            return;
++        }
+     }
+ 
+     if (newp->GetTeam() != plr->GetTeam() && !sWorld.getConfig(CONFIG_ALLOW_TWO_SIDE_INTERACTION_CHANNEL))
+     {
+-        WorldPacket data;
+-        MakePlayerNotFound(&data, newname);
+-        SendToOne(&data, p);
+-        return;
++        if ( m_name != worldChatChannelName )
++        {
++            WorldPacket data;
++            MakePlayerNotFound(&data, newname);
++            SendToOne(&data, p);
++            return;
++        }
+     }
+ 
+     players[newp->GetGUID()].SetModerator(true);
+@@ -537,10 +595,15 @@
+ 
+ void Channel::Say(uint64 p, const char *what, uint32 lang)
+ {
++
++    std::string worldChatChannelName = sWorld.GetWorldChatChannelName();
++
+     if (!what)
+         return;
+     if (sWorld.getConfig(CONFIG_ALLOW_TWO_SIDE_INTERACTION_CHANNEL))
+         lang = LANG_UNIVERSAL;
++    if ( m_name == worldChatChannelName ) // World chat is always two sided
++        lang = LANG_UNIVERSAL;
+ 
+     uint32 sec = 0;
+     Player *plr = objmgr.GetPlayer(p);
+diff -Nuar oregoncore-current/src/game/World.cpp oregoncore-pq/src/game/World.cpp
+--- oregoncore-current/src/game/World.cpp	2012-05-20 11:29:49.000000000 -0400
++++ oregoncore-pq/src/game/World.cpp	2012-05-20 11:42:49.000000000 -0400
+@@ -710,6 +710,10 @@
+         m_configs[CONFIG_START_HONOR_POINTS] = m_configs[CONFIG_MAX_HONOR_POINTS];
+     }
+ 
++    m_worldChatChannelName = sConfig.GetStringDefault("Channel.WorldChat.ChannelName","world");
++    m_worldChatOwnerGuid = sConfig.GetIntDefault("Channel.WorldChat.OwnerGUID",1);
++    m_worldChatIdleGuid = sConfig.GetIntDefault("Channel.WorldChat.IdleGUID",2);
++
+     m_configs[CONFIG_MAX_ARENA_POINTS] = sConfig.GetIntDefault("MaxArenaPoints", 5000);
+     if (int32(m_configs[CONFIG_MAX_ARENA_POINTS]) < 0)
+     {
+diff -Nuar oregoncore-current/src/game/World.h oregoncore-pq/src/game/World.h
+--- oregoncore-current/src/game/World.h	2012-05-20 11:29:49.000000000 -0400
++++ oregoncore-pq/src/game/World.h	2012-05-20 11:42:49.000000000 -0400
+@@ -478,6 +478,11 @@
+         // Get the current Message of the Day
+         const char* GetMotd() const { return m_motd.c_str(); }
+ 
++        /// WorldChat
++        std::string GetWorldChatChannelName() const { return m_worldChatChannelName; }
++        uint64 GetWorldChatOwnerGuid() const { return m_worldChatOwnerGuid; }
++        uint64 GetWorldChatIdleGuid() const { return m_worldChatIdleGuid; }
++
+         // Set the string for new characters (first login)
+         void SetNewCharString(std::string str) { m_newCharString = str; }
+         // Get the string for new characters (first login)
+@@ -654,6 +659,10 @@
+         std::string m_dataPath;
+         std::set<uint32> m_forbiddenMapIds;
+ 
++        std::string m_worldChatChannelName;
++        uint64 m_worldChatOwnerGuid;
++        uint64 m_worldChatIdleGuid;
++
+         // for max speed access
+         static float m_MaxVisibleDistanceOnContinents;
+         static float m_MaxVisibleDistanceInInstances;
+diff -Nuar oregoncore-current/src/oregoncore/oregoncore.conf.dist oregoncore-pq/src/oregoncore/oregoncore.conf.dist
+--- oregoncore-current/src/oregoncore/oregoncore.conf.dist	2012-05-20 11:29:49.000000000 -0400
++++ oregoncore-pq/src/oregoncore/oregoncore.conf.dist	2012-05-20 11:42:49.000000000 -0400
+@@ -1093,6 +1093,24 @@
+ #        Default: 0 (join announcement in normal way)
+ #                 1 (GM join without announcement)
+ #
++#    Channel.WorldChat.ChannelName
++#        Channel name to use as world chat.  Regular players cannot own or
++#        moderate this channel, even if the GM Owner is not logged in.
++#        Default: "world"
++#
++#    Channel.WorldChat.OwnerGUID
++#        The GM-Level player GUID to be considered owner/moderator of the
++#        world chat channel.  This player GUID *MUST* exist.
++#        Default: 1
++#
++#    Channel.WorldChat.IdleGUID
++#        The GM-Level player GUID to be considered owner/moderator of the
++#        world chat channel when the OwnerGUID is not logged in.  This
++#        player GUID *MUST* exist.  This player, ironically, cannot 
++#        participate in world chat, so you should use a character that does
++#        not act as a regular player (suggest the same as AuctionHouseBot).
++#        Default: 2
++#
+ ###############################################################################
+ 
+ ChatFakeMessagePreventing = 0
+@@ -1103,6 +1121,9 @@
+ ChatFlood.MuteTime = 10
+ Channel.RestrictedLfg = 1
+ Channel.SilentlyGMJoin = 0
++Channel.WorldChat.ChannelName = "world"
++Channel.WorldChat.OwnerGUID = 1
++Channel.WorldChat.IdleGUID = 2
+ 
+ ###############################################################################
+ # GAME MASTER SETTINGS

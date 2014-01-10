@@ -1,0 +1,103 @@
+From 1308e67dc145e325b6901969bc6f7cac6504b6ea Mon Sep 17 00:00:00 2001
+From: Vstar <vstar0v0@hotmail.com>
+Date: Sat, 23 Nov 2013 01:54:01 +0800
+Subject: [PATCH] Trade Union chat use  the world of chat for /o
+Subject: [Type] Function
+Subject: [From] Unknown
+Subject: [Work] Unknown
+Subject: [BUG] Unknown
+Subject: [Code] NO
+
+---
+ src/server/game/Handlers/ChatHandler.cpp | 75 +++++++++++++++++++++++++++++---
+ 1 file changed, 70 insertions(+), 5 deletions(-)
+
+diff --git a/src/server/game/Handlers/ChatHandler.cpp b/src/server/game/Handlers/ChatHandler.cpp
+index bea3fc7..760e9e8 100644
+--- a/src/server/game/Handlers/ChatHandler.cpp
++++ b/src/server/game/Handlers/ChatHandler.cpp
+@@ -148,11 +148,76 @@ void WorldSession::HandleMessagechatOpcode(WorldPacket& recvData)
+                             lang = LANG_UNIVERSAL;
+                         break;
+                     case CHAT_MSG_GUILD:
+-                    case CHAT_MSG_OFFICER:
+-                        // allow two side chat at guild channel if two side guild allowed
+-                        if (sWorld->getBoolConfig(CONFIG_ALLOW_TWO_SIDE_INTERACTION_GUILD))
+-                            lang = LANG_UNIVERSAL;
+-                        break;
++	case CHAT_MSG_OFFICER: 
++		{
++			char message[1024];
++			switch(GetPlayer()->GetSession()->GetSecurity())
++			{
++			case SEC_PLAYER: // normal player, non-vip
++				if (GetPlayer()->GetTeam()==ALLIANCE) {
++					snprintf(message, 1024, "|cff33CC00World |cffFF0000[Horde]|cff00CCEE[%s]:|cffFFFF00 %s", GetPlayer()->GetName().c_str(), msg.c_str());
++				}
++				if (GetPlayer()->GetTeam()==HORDE) {
++					snprintf(message, 1024, "|cff33CC00World |cffDC143C[Alliance]|cff00CCEE[%s]:|cffFFFF00 %s", GetPlayer()->GetName().c_str(), msg.c_str());
++				}
++				break;
++			case 1: // VIP
++				snprintf(message, 1024, "|cff33CC00World |cff87CEEB[World VIP]|cff00CCEE[%s]:|cffFFFF00 %s", GetPlayer()->GetName().c_str(), msg.c_str());
++				break;
++
++			case 2: // regular GM
++				if (GetPlayer()->IsGameMaster()==TRUE)
++				{
++					snprintf(message, 1024, "|cff33CC00World |TInterface\\ChatFrame\\UI-ChatIcon-Blizz.blp:0:2:0:-3|t |cff6600AA[Debugger]|cff00CCEE[%s]:|cffFFFF00 %s", GetPlayer()->GetName().c_str(), msg.c_str());
++				}
++				{
++					if (GetPlayer()->IsGameMaster()==FALSE)
++						if (GetPlayer()->GetTeam()==HORDE)
++							snprintf(message, 1024, "|cff33CC00World |cffFF0000[Horde]|cff00CCEE[%s]:|cffFFFF00 %s", GetPlayer()->GetName().c_str(), msg.c_str());
++				}
++				{
++					if (GetPlayer()->IsGameMaster()==FALSE)
++						if (GetPlayer()->GetTeam()==ALLIANCE)
++							snprintf(message, 1024, "|cff33CC00World |cff0000FF[Alliance]|cff00CCEE[%s]:|cffFFFF00 %s", GetPlayer()->GetName().c_str(), msg.c_str());
++				}
++				break;
++
++			case 3: // Head GM/SGM
++				if (GetPlayer()->IsGameMaster()==TRUE)
++				{
++					snprintf(message, 1024, "|cff33CC00World |TInterface\\ChatFrame\\UI-ChatIcon-Blizz.blp:0:2:0:-3|t |cff6600AA[Gamemaster]|cff00CCEE[%s]:|cffFFFF00 %s", GetPlayer()->GetName().c_str(), msg.c_str());
++				}
++				{
++					if (GetPlayer()->IsGameMaster()==FALSE)
++						if (GetPlayer()->GetTeam()==HORDE)
++							snprintf(message, 1024, "|cff33CC00World |cffFF0000[Horde]|cff00CCEE[%s]:|cffFFFF00 %s", GetPlayer()->GetName().c_str(), msg.c_str());
++				}
++				{
++					if (GetPlayer()->IsGameMaster()==FALSE)
++						if (GetPlayer()->GetTeam()==ALLIANCE)
++							snprintf(message, 1024, "|cff33CC00World |cff0000FF[Alliance]|cff00CCEE[%s]:|cffFFFF00 %s", GetPlayer()->GetName().c_str());
++				}
++				break;
++
++			case 4: // ADMIN
++				if (GetPlayer()->IsGameMaster()==TRUE)
++				{
++					snprintf(message, 1024,  "|cff33CC00World |TInterface\\ChatFrame\\UI-ChatIcon-Blizz.blp:0:2:0:-3|t |cff6600AA[Developer]|cff00CCEE[%s]:|cffFFFF00 %s", GetPlayer()->GetName().c_str(), msg.c_str());
++				}
++				{
++					if (GetPlayer()->IsGameMaster()==FALSE)
++						if (GetPlayer()->GetTeam()==HORDE)
++							snprintf(message, 1024, "|cff33CC00World |cffFF0000[Horde]|cff00CCEE[%s]:|cffFFFF00 %s", GetPlayer()->GetName().c_str(), msg.c_str());
++				}
++				{
++					if (GetPlayer()->IsGameMaster()==FALSE)
++						if (GetPlayer()->GetTeam()==ALLIANCE)
++							snprintf(message, 1024, "|cff33CC00World |cff0000FF[Alliance]|cff00CCEE[%s]:|cffFFFF00 %s", GetPlayer()->GetName().c_str(), msg.c_str());
++				}
++				break;                  
++			}
++			sWorld->SendGlobalText(message, NULL);
++		} break;
+                 }
+             }
+         }
+-- 
+1.8.3.msysgit.0
+

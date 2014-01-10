@@ -1,0 +1,28 @@
+diff -Nuar oregoncore-current/sql/oc-patch/world-emaralddream.sql oregoncore-pq/sql/oc-patch/world-emaralddream.sql
+--- oregoncore-current/sql/oc-patch/world-emaralddream.sql	1969-12-31 19:00:00.000000000 -0500
++++ oregoncore-pq/sql/oc-patch/world-emaralddream.sql	2012-05-20 11:37:30.000000000 -0400
+@@ -0,0 +1,11 @@
++-- Data for table `instance_template`
++
++INSERT INTO `instance_template` (`map`, `parent`, `maxPlayers`, `reset_delay`, `access_id`, `startLocX`, `startLocY`, `startLocZ`, `startLocO`, `script`) VALUES
++(169, 0, 40, 0, 0, NULL, NULL, NULL, NULL, '');
++
++
++-- Data for table `game_tele`
++
++INSERT INTO `game_tele` (`position_x`, `position_y`, `position_z`, `orientation`, `map`, `name`) VALUES
++( -2604.74, -2077.5, 126.758, 0.677952, 169, 'emeralddream');
++
+diff -Nuar oregoncore-current/src/game/MapManager.cpp oregoncore-pq/src/game/MapManager.cpp
+--- oregoncore-current/src/game/MapManager.cpp	2012-05-20 11:29:48.000000000 -0400
++++ oregoncore-pq/src/game/MapManager.cpp	2012-05-20 11:37:30.000000000 -0400
+@@ -164,6 +164,9 @@
+     if (!entry)
+        return false;
+ 
++    if (entry->MapID == 169)
++       return true;
++
+     const char *mapName = entry->name[player->GetSession()->GetSessionDbcLocale()];
+ 
+     if (entry->IsDungeon())

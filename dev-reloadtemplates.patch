@@ -1,0 +1,71 @@
+diff -Nuar oregoncore-current/src/game/Chat.cpp oregoncore-pq/src/game/Chat.cpp
+--- oregoncore-current/src/game/Chat.cpp	2012-05-20 11:29:48.000000000 -0400
++++ oregoncore-pq/src/game/Chat.cpp	2012-05-20 11:42:21.000000000 -0400
+@@ -350,6 +350,15 @@
+         { "waypoint_scripts",            SEC_ADMINISTRATOR, true,  &ChatHandler::HandleReloadWpScriptsCommand,               "", NULL },
+         { "gm_tickets",                  SEC_ADMINISTRATOR, true,  &ChatHandler::HandleGMTicketReloadCommand,                "", NULL },
+ 
++        // DEV -- FOR DEVELOPMENT SERVERS ONLY!!
++        { "gameobject_template",         SEC_ADMINISTRATOR, true,  &ChatHandler::HandleReloadGameobjectTemplateCommand,
++     "", NULL },
++        { "item_template",               SEC_ADMINISTRATOR, true,  &ChatHandler::HandleReloadItemTemplateCommand,
++     "", NULL },
++        { "creature_template",           SEC_ADMINISTRATOR, true,  &ChatHandler::HandleReloadCreatureTemplateCommand,
++     "", NULL },
++        // DEV END
++
+         { "",                            SEC_ADMINISTRATOR, true,  &ChatHandler::HandleReloadCommand,                        "", NULL },
+         { NULL,                          0,                 false, NULL,                                                     "", NULL }
+     };
+diff -Nuar oregoncore-current/src/game/Chat.h oregoncore-pq/src/game/Chat.h
+--- oregoncore-current/src/game/Chat.h	2012-05-20 11:29:48.000000000 -0400
++++ oregoncore-pq/src/game/Chat.h	2012-05-20 11:42:21.000000000 -0400
+@@ -306,6 +306,12 @@
+         bool HandleReloadLocalesQuestCommand(const char* args);
+         bool HandleReloadAuctionsCommand(const char* args);
+ 
++        // DEV -- FOR DEVELOPMENT SERVERS ONLY!!
++        bool HandleReloadGameobjectTemplateCommand(const char* args);
++        bool HandleReloadItemTemplateCommand(const char* args);
++        bool HandleReloadCreatureTemplateCommand(const char* args);
++        // DEV END
++
+         bool HandleInstanceListBindsCommand(const char* args);
+         bool HandleInstanceUnbindCommand(const char* args);
+         bool HandleInstanceStatsCommand(const char* args);
+diff -Nuar oregoncore-current/src/game/Level3.cpp oregoncore-pq/src/game/Level3.cpp
+--- oregoncore-current/src/game/Level3.cpp	2012-05-20 11:29:48.000000000 -0400
++++ oregoncore-pq/src/game/Level3.cpp	2012-05-20 11:42:21.000000000 -0400
+@@ -1268,6 +1268,32 @@
+     return true;
+ }
+ 
++// DEV -- These functions should only be used in development mode - not on a production server
++bool ChatHandler::HandleReloadGameobjectTemplateCommand(const char*)
++{
++    sLog.outString( "WARNING: Reloading gameobject_template" );
++    objmgr.LoadGameobjectInfo();
++    SendGlobalSysMessage("WARNING: DB table `gameobject_template` reloaded.");
++    return true;
++}
++
++bool ChatHandler::HandleReloadItemTemplateCommand(const char*)
++{
++    sLog.outString( "WARNING: Reloading item_template" );
++    objmgr.LoadItemPrototypes();
++    SendGlobalSysMessage("WARNIONG: DB table `item_template` reloaded.");
++    return true;
++}
++
++bool ChatHandler::HandleReloadCreatureTemplateCommand(const char*)
++{
++    sLog.outString( "WARNING: Reloading creature_template" );
++    objmgr.LoadCreatureTemplates();
++    SendGlobalSysMessage("WARNING: DB table `creature_template` reloaded.");
++    return true;
++}
++// DEV END
++
+ bool ChatHandler::HandleAccountSetGmLevelCommand(const char *args)
+ {
+     if (!*args)

@@ -1,0 +1,358 @@
+diff -Nuar oregoncore-current/sql/oc-patch/world-codeboxnpc.sql oregoncore-pq/sql/oc-patch/world-codeboxnpc.sql
+--- oregoncore-current/sql/oc-patch/world-codeboxnpc.sql	1969-12-31 19:00:00.000000000 -0500
++++ oregoncore-pq/sql/oc-patch/world-codeboxnpc.sql	2012-05-20 11:36:27.000000000 -0400
+@@ -0,0 +1,98 @@
++--
++-- Table structure for table `npc_codes`
++--
++
++CREATE TABLE IF NOT EXISTS `npc_codes` (
++  `npc_id` mediumint(10) NOT NULL default '0' COMMENT 'The NPC ID',
++  `code` varchar(25) NOT NULL COMMENT 'The code you have to enter',
++  `uses` tinyint(3) NOT NULL default '1' COMMENT 'Number of uses left for this code',
++  `aura_id` mediumint(10) NOT NULL default '0' COMMENT 'The spell it will be applied',
++  `item_id` mediumint(10) NOT NULL default '0' COMMENT 'The gift (item)',
++  `quantity` tinyint(3) unsigned NOT NULL default '1' COMMENT 'The quantity of ITEMS',
++  PRIMARY KEY  (`npc_id`,`code`)
++) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
++
++--
++-- Dumping data for table `npc_codes`
++--
++
++INSERT INTO `npc_codes` (`npc_id`, `code`, `uses`, `aura_id`, `item_id`, `quantity`) VALUES
++(2943, 'murlocsuit', 3, 0, 33079, 1),
++(2943, 'surprise', -1, -1, 0, 1),
++(16070, 'murlocblue', 5, 0, 20371, 1),
++(16070, 'murlocpink', 5, 0, 22114, 1),
++(16070, 'surprise', -1, -1, 0, 1),
++(7951, 'murlocsuit', 3, 0, 33079, 1),
++(7951, 'surprise', -1, -1, 0, 1),
++(16076, 'murlocblue', 5, 0, 20371, 1),
++(16076, 'murlocpink', 5, 0, 22114, 1),
++(16076, 'surprise', -1, -1, 0, 1);
++
++
++--
++-- Table structure for table `npc_codes_text`
++--
++
++CREATE TABLE IF NOT EXISTS `npc_codes_text` (
++  `npc_id` mediumint(10) NOT NULL COMMENT 'from npc_codes',
++  `npc_text_id` mediumint(10) NOT NULL default '907' COMMENT 'from npc_text'
++) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='Reward Codes System';
++
++--
++-- Dumping data for table `npc_codes_text`
++--
++
++INSERT INTO `npc_codes_text` (`npc_id`, `npc_text_id`) VALUES
++(7951, 13690),
++(16076, 907),
++(2943, 13690),
++(16070, 907);
++
++--
++-- Dumping data for table `npc_text`
++--
++
++INSERT INTO `npc_text` (`ID`, `text0_0`, `text0_1`, `lang0`, `prob0`, `em0_0`, `em0_1`, `em0_2`, `em0_3`, `em0_4`, `em0_5`, `text1_0`, `text1_1`, `lang1`, `prob1`, `em1_0`, `em1_1`, `em1_2`, `em1_3`, `em1_4`, `em1_5`, `text2_0`, `text2_1`, `lang2`, `prob2`, `em2_0`, `em2_1`, `em2_2`, `em2_3`, `em2_4`, `em2_5`, `text3_0`, `text3_1`, `lang3`, `prob3`, `em3_0`, `em3_1`, `em3_2`, `em3_3`, `em3_4`, `em3_5`, `text4_0`, `text4_1`, `lang4`, `prob4`, `em4_0`, `em4_1`, `em4_2`, `em4_3`, `em4_4`, `em4_5`, `text5_0`, `text5_1`, `lang5`, `prob5`, `em5_0`, `em5_1`, `em5_2`, `em5_3`, `em5_4`, `em5_5`, `text6_0`, `text6_1`, `lang6`, `prob6`, `em6_0`, `em6_1`, `em6_2`, `em6_3`, `em6_4`, `em6_5`, `text7_0`, `text7_1`, `lang7`, `prob7`, `em7_0`, `em7_1`, `em7_2`, `em7_3`, `em7_4`, `em7_5`) VALUES
++(13690, 'What can I do for you?', '', 0, 1, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0, '', '', 0, 0, 0, 0, 0, 0, 0, 0);
++
++
++UPDATE creature_template SET ScriptName = 'npc_codebox' WHERE entry IN (2943, 7951, 16070, 16076);
++
++
++--
++-- Table structure for table `npc_codes_aura_loot`
++--
++
++CREATE TABLE IF NOT EXISTS `npc_codes_aura_loot` (
++  `group_id` mediumint(10) NOT NULL default '0' COMMENT 'Group that the auras belong to',
++  `aura_id` mediumint(10) NOT NULL default '0' COMMENT 'GUID of aura',
++  `name` varchar(25) default NULL COMMENT 'Name of aura',
++  PRIMARY KEY  (`group_id`,`aura_id`)
++) ENGINE=MyISAM DEFAULT CHARSET=utf8;
++
++--
++-- Dumping data for table `npc_codes_aura_loot`
++--
++
++INSERT INTO `npc_codes_aura_loot` (`group_id`, `aura_id`, `name`) VALUES
++(1, 24708, 'male pirate costume'),
++(1, 24709, 'female pirate costume'),
++(1, 24710, 'male ninja costume'),
++(1, 24711, 'female ninja costume'),
++(1, 24713, 'leper gnome costume'),
++(1, 24723, 'skeleton costume'),
++(1, 24735, 'male ghost costume'),
++(1, 24736, 'female ghost costume'),
++(1, 24753, 'cannot cast');
++
++--
++-- Table structure for table `npc_codes_item_loot`
++--
++
++CREATE TABLE IF NOT EXISTS `npc_codes_item_loot` (
++  `group_id` mediumint(10) NOT NULL default '0' COMMENT 'Group that the items belong to',
++  `item_id` mediumint(10) NOT NULL default '0' COMMENT 'GUID of item',
++  `name` varchar(25) default NULL COMMENT 'Name of Item',
++  PRIMARY KEY  (`group_id`,`item_id`)
++) ENGINE=MyISAM DEFAULT CHARSET=utf8;
++
+diff -Nuar oregoncore-current/src/game/ScriptLoader.cpp oregoncore-pq/src/game/ScriptLoader.cpp
+--- oregoncore-current/src/game/ScriptLoader.cpp	2012-05-20 11:29:49.000000000 -0400
++++ oregoncore-pq/src/game/ScriptLoader.cpp	2012-05-20 11:36:27.000000000 -0400
+@@ -21,6 +21,9 @@
+ 
+ #ifdef SCRIPTS
+ 
++//custom
++void AddSC_npc_codebox();
++
+ //examples
+ //void AddSC_custom_example();
+ //void AddSC_custom_gossip_codebox();
+@@ -393,6 +396,10 @@
+ void AddScripts()
+ {
+ #ifdef SCRIPTS
++
++    //Custom
++    AddSC_npc_codebox();
++
+ //    AddSC_custom_example();
+ //    AddSC_custom_gossip_codebox();
+ //    AddSC_test();
+diff -Nuar oregoncore-current/src/scripts/Custom/npc_codebox.cpp oregoncore-pq/src/scripts/Custom/npc_codebox.cpp
+--- oregoncore-current/src/scripts/Custom/npc_codebox.cpp	1969-12-31 19:00:00.000000000 -0500
++++ oregoncore-pq/src/scripts/Custom/npc_codebox.cpp	2012-05-20 11:36:27.000000000 -0400
+@@ -0,0 +1,228 @@
++/* This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
++ */
++
++/* ScriptData
++SDName: NPC_Code_Codebox
++SD%Complete: 100
++SDComment: Makes an NPC give a gift if a valid code is entered
++SDCategory: NPCs
++EndScriptData */
++
++#include "ScriptPCH.h"
++#include <cstring>
++
++#define C_GOSSIP_MENU 907
++#define D_ENTER_CODE "I have a code!"
++#define D_CANCEL_CODE "Nevermind..."
++#define SAY_INV_FULL "Your code is right, but you have no space in your bags!  Come back when you have some free space."
++#define SAY_EXPIRED "Sorry, your code has expired.  Come back when you have a valid one."
++#define SAY_INVALID "Sorry, your code is not valid.  Come back when you have a new one."
++#define SAY_GIVE_PRESENT "This is for you!  I hope you enjoy it."
++#define SAY_EXTRA_BUFF "How lucky you are!  You get an item and a buff!"
++#define SAY_GIVE_BUFF "Here is a special buff, just for you!"
++#define SAY_GOODBYE "Nice to see you!  Goodbye!"
++
++/*
++ Returns TRUE if the gift is given.
++ Returns FALSE if the code is wrong
++   or if the gift can't be given (i.e. full inventory).
++
++ ~elegos
++*/
++bool checkCode(Player *player, Creature *_Creature, const char* sCode)
++{
++    // Some variables declarations.
++    int32 item_id = 0;
++    int32 aura_id = 0;
++    uint32 quantity = 0;
++    int32 uses = 0;
++    bool check = false;
++
++    extern DatabaseType WorldDatabase;
++    uint32 creatureID = _Creature->GetEntry();
++
++    QueryResult_AutoPtr result = WorldDatabase.PQuery("SELECT `item_id`, `aura_id`, `quantity`, `uses`  FROM `npc_codes` WHERE `code` = '%s' AND npc_id = %i LIMIT 1",sCode,creatureID);
++    if(result)
++    {
++        check = true;
++        Field *fields = result->Fetch();
++
++        item_id = fields[0].GetInt32();
++        aura_id = fields[1].GetInt32();
++        quantity = fields[2].GetUInt32();
++        uses = fields[3].GetUInt32();
++
++        if(uses != 0)
++        {
++            if(item_id > 0)
++            {
++                ItemPosCountVec dest;
++                uint8 canStoreNewItem = player->CanStoreNewItem(NULL_BAG, NULL_SLOT, dest, item_id, quantity);
++                if(canStoreNewItem == EQUIP_ERR_OK)
++                {
++                    Item *newItem = NULL;
++                    newItem = player->StoreNewItem(dest,item_id,quantity,true);
++                    player->SendNewItem(newItem,quantity,true,false);
++                }
++                else
++                {
++                    _Creature->MonsterWhisper(SAY_INV_FULL, player->GetGUID());
++                    check = false;
++                }
++            }
++            else if(item_id < 0)
++            {
++                uint32 id = item_id * -1;
++                uint32 num;
++                uint32 item;
++                QueryResult_AutoPtr items = WorldDatabase.PQuery("SELECT `item_id` FROM `npc_codes_item_loot` WHERE `group_id` = '%i'",id);
++                if(items)
++                {
++                    num = rand()%items->GetRowCount();
++                    Field *i;
++                    uint32 count = 0;
++                    do
++                    {
++                        i = items->Fetch();
++                        item = i[0].GetUInt32();
++                        ++count;
++                    }while((count < num) && (items->NextRow()));
++                    ItemPosCountVec dest;
++                    uint8 canStoreNewItem = player->CanStoreNewItem(NULL_BAG, NULL_SLOT, dest, item, quantity);
++                    if(canStoreNewItem == EQUIP_ERR_OK)
++                    {
++                        Item *newItem = NULL;
++                        newItem = player->StoreNewItem(dest,item,quantity,true);
++                        player->SendNewItem(newItem,quantity,true,false);
++                    }
++                    else
++                    {
++                        _Creature->MonsterWhisper(SAY_INV_FULL, player->GetGUID());
++                        check = false;
++                    }
++                }
++            }
++            if(aura_id > 0 && check == true)
++            {
++                _Creature->CastSpell(player, aura_id, true);
++            }
++            else if(aura_id < 0 && check == true)
++            {
++                uint32 id = aura_id * -1;
++                uint32 num;
++                uint32 aura;
++                QueryResult_AutoPtr auras = WorldDatabase.PQuery("SELECT `aura_id` FROM `npc_codes_aura_loot` WHERE `group_id` = '%i'",id);
++                if(auras)
++                {
++                    num = rand()%auras->GetRowCount();
++                    Field *a;
++                    uint32 count = 0;
++                    do
++                    {
++                        a = auras->Fetch();
++                        aura = a[0].GetUInt32();
++                        ++count;
++                    }while((count < num) && (auras->NextRow()));
++                    _Creature->CastSpell(player, aura, true);
++                }
++            }
++        }
++        else
++        {
++            check = false;
++            _Creature->MonsterWhisper(SAY_EXPIRED, player->GetGUID());
++        }
++    }
++    else
++    {
++        check = false;
++        _Creature->MonsterWhisper(SAY_INVALID, player->GetGUID());
++    }
++
++
++    if(check == true)
++    {
++        if(uses > 0)
++        {
++            WorldDatabase.PExecute("UPDATE `npc_codes` SET `uses` = (`uses` - 1) WHERE `code` = '%s' LIMIT 1",sCode);
++        }
++        if(item_id != 0 && aura_id == 0)
++            _Creature->MonsterSay(SAY_GIVE_PRESENT, LANG_UNIVERSAL, NULL);
++        if(item_id != 0 && aura_id != 0)
++            _Creature->MonsterSay(SAY_EXTRA_BUFF, LANG_UNIVERSAL, NULL);
++        if(item_id == 0 && aura_id != 0)
++            _Creature->MonsterSay(SAY_GIVE_BUFF, LANG_UNIVERSAL, NULL);
++    }
++    return check;
++}
++
++//This function is called when the player opens the gossip menubool
++bool GossipHello_npc_codebox(Player *player, Creature *_Creature)
++{
++    int32 text_id = C_GOSSIP_MENU;
++    
++    extern DatabaseType WorldDatabase;
++    uint32 creatureID = _Creature->GetEntry();
++
++    QueryResult_AutoPtr result = WorldDatabase.PQuery("SELECT `npc_text_id` FROM `npc_codes_text` WHERE npc_id = %i LIMIT 1",creatureID);
++    if(result)
++    {
++        Field *fields = result->Fetch();
++        text_id = fields[0].GetInt32();
++    }
++
++    player->ADD_GOSSIP_ITEM_EXTENDED(0, D_ENTER_CODE, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF+1, "", 0, true);
++    player->ADD_GOSSIP_ITEM(0, D_CANCEL_CODE, GOSSIP_SENDER_MAIN, GOSSIP_ACTION_INFO_DEF+2);
++
++    player->PlayerTalkClass->SendGossipMenu(text_id,_Creature->GetGUID());
++    return true;
++}
++
++//This function is called when the player clicks an option on the gossip menubool
++bool GossipSelect_npc_codebox(Player *player, Creature *_Creature, uint32 sender, uint32 action )
++{
++    if(action == GOSSIP_ACTION_INFO_DEF+2)
++    {
++        _Creature->MonsterSay(SAY_GOODBYE, LANG_UNIVERSAL, NULL); 
++        player->CLOSE_GOSSIP_MENU();
++    }
++    return true;
++}
++
++bool GossipSelectWithCode_npc_codebox( Player *player, Creature *_Creature, uint32 sender, uint32 action, const char* sCode )
++{
++    if(sender == GOSSIP_SENDER_MAIN)
++    {
++        if(action == GOSSIP_ACTION_INFO_DEF+1)
++        {
++            checkCode(player, _Creature, sCode);
++            player->CLOSE_GOSSIP_MENU();
++            return true;
++        }
++    }
++    return false;
++}
++
++void AddSC_npc_codebox()
++{
++    Script *newscript;
++    newscript = new Script;
++    newscript->Name="npc_codebox";
++    newscript->pGossipHello =           &GossipHello_npc_codebox;
++    newscript->pGossipSelect =          &GossipSelect_npc_codebox;
++    newscript->pGossipSelectWithCode =  &GossipSelectWithCode_npc_codebox;
++    newscript->RegisterSelf();
++}
++

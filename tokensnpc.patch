@@ -1,0 +1,245 @@
+diff -Nuar oregoncore-current/sql/oc-patch/world-npctokens.sql oregoncore-pq/sql/oc-patch/world-npctokens.sql
+--- oregoncore-current/sql/oc-patch/world-npctokens.sql	1969-12-31 19:00:00.000000000 -0500
++++ oregoncore-pq/sql/oc-patch/world-npctokens.sql	2012-05-20 11:41:39.000000000 -0400
+@@ -0,0 +1,21 @@
++-- Table structure for table `npc_tokens`
++
++CREATE TABLE IF NOT EXISTS `npc_tokens` (
++  `type` tinyint(3) unsigned NOT NULL default '0' COMMENT 'Valid: 0-Gold, 1-Level, 2-Honor, 3-Arena, 4-MaxSkill',
++  `min_level` tinyint(3) unsigned NOT NULL default '1',
++  `max_level` tinyint(3) unsigned NOT NULL default '70',
++  `curr_item_id` mediumint(8) unsigned NOT NULL default '29434' COMMENT 'Currency - Dflt: Badge of Justice',
++  `curr_cost` tinyint(3) unsigned NOT NULL default '1',
++  `count_granted` mediumint(8) unsigned NOT NULL default '1',
++  UNIQUE KEY `type` (`type`,`min_level`,`max_level`,`curr_item_id`)
++) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='NPC Tokens';
++
++-- Data for table `npc_tokens`
++
++INSERT INTO `npc_tokens` (`type`, `min_level`, `max_level`, `curr_item_id`, `curr_cost`, `count_granted`) VALUES
++(0, 1, 70, 29434, 1, 500),
++(1, 1, 70, 29434, 1, 1),
++(2, 1, 70, 29434, 1, 500),
++(3, 1, 70, 29434, 1, 100),
++(4, 1, 70, 29434, 1, 1);
++
+diff -Nuar oregoncore-current/src/game/ScriptLoader.cpp oregoncore-pq/src/game/ScriptLoader.cpp
+--- oregoncore-current/src/game/ScriptLoader.cpp	2012-05-20 11:29:49.000000000 -0400
++++ oregoncore-pq/src/game/ScriptLoader.cpp	2012-05-20 11:41:39.000000000 -0400
+@@ -21,6 +21,9 @@
+ 
+ #ifdef SCRIPTS
+ 
++//custom
++void AddSC_npc_tokens();
++
+ //examples
+ //void AddSC_custom_example();
+ //void AddSC_custom_gossip_codebox();
+@@ -393,6 +396,10 @@
+ void AddScripts()
+ {
+ #ifdef SCRIPTS
++
++    //Custom
++    AddSC_npc_tokens();
++
+ //    AddSC_custom_example();
+ //    AddSC_custom_gossip_codebox();
+ //    AddSC_test();
+diff -Nuar oregoncore-current/src/scripts/Custom/npc_tokens.cpp oregoncore-pq/src/scripts/Custom/npc_tokens.cpp
+--- oregoncore-current/src/scripts/Custom/npc_tokens.cpp	1969-12-31 19:00:00.000000000 -0500
++++ oregoncore-pq/src/scripts/Custom/npc_tokens.cpp	2012-05-20 11:41:39.000000000 -0400
+@@ -0,0 +1,192 @@
++/* ScriptData
++SDName: Token Exchange NPC
++SD%Complete: 100
++SDComment: By Celtus based on concepts from the TC2 Forums
++SDCategory: NPC
++EndScriptData */
++
++#include "ScriptPCH.h"
++#include <cstring>
++
++extern DatabaseType WorldDatabase;
++
++uint32 goldItemId;
++uint32 tokensForGold;
++uint32 goldGranted;
++uint32 levelItemId;
++uint32 tokensForLevel;
++uint32 levelsGranted;
++uint32 honorItemId;
++uint32 tokensForHonor;
++uint32 honorGranted;
++uint32 arenaItemId;
++uint32 tokensForArena;
++uint32 arenaGranted;
++uint32 skillItemId;
++uint32 tokensForMaxSkill;
++
++bool GossipHello_npc_tokens(Player* pPlayer, Creature* pCreature)
++{
++    uint32 playerLevel = pPlayer->getLevel();
++
++    QueryResult_AutoPtr result0 = WorldDatabase.PQuery("SELECT `curr_item_id`, `curr_cost`, `count_granted` FROM `npc_tokens` WHERE `type` = 0 AND `min_level` <= %i AND `max_level` >= %i LIMIT 1", playerLevel, playerLevel);
++    if (result0) 
++    {
++      Field *fields0 = result0->Fetch();
++      goldItemId = fields0[0].GetUInt32(); 
++      tokensForGold = fields0[1].GetUInt32();
++      goldGranted = fields0[2].GetUInt32();
++      pPlayer->ADD_GOSSIP_ITEM( 9, "Trade Tokens for Gold", GOSSIP_SENDER_MAIN, 1000);
++    }
++    QueryResult_AutoPtr result1 = WorldDatabase.PQuery("SELECT `curr_item_id`, `curr_cost`, `count_granted` FROM `npc_tokens` WHERE `type` = 1 AND `min_level` <= %i AND `max_level` >= %i LIMIT 1", playerLevel, playerLevel);
++    if (result1)
++    {
++      Field *fields1 = result1->Fetch();
++      levelItemId = fields1[0].GetUInt32();
++      tokensForLevel = fields1[1].GetUInt32();
++      levelsGranted = fields1[2].GetUInt32();
++      pPlayer->ADD_GOSSIP_ITEM( 9, "Trade Tokens for Levels", GOSSIP_SENDER_MAIN, 2000);
++    }
++    QueryResult_AutoPtr result2 = WorldDatabase.PQuery("SELECT `curr_item_id`, `curr_cost`, `count_granted` FROM `npc_tokens` WHERE `type` = 2 AND `min_level` <= %i AND `max_level` >= %i LIMIT 1", playerLevel, playerLevel);
++    if (result2)
++    {
++      Field *fields2 = result2->Fetch();
++      honorItemId = fields2[0].GetUInt32();
++      tokensForHonor = fields2[1].GetUInt32();
++      honorGranted = fields2[2].GetUInt32();
++      pPlayer->ADD_GOSSIP_ITEM( 9, "Trade Tokens for Honor Points", GOSSIP_SENDER_MAIN, 3000);
++    }
++    QueryResult_AutoPtr result3 = WorldDatabase.PQuery("SELECT `curr_item_id`, `curr_cost`, `count_granted` FROM `npc_tokens` WHERE `type` = 3 AND `min_level` <= %i AND `max_level` >= %i LIMIT 1", playerLevel, playerLevel);
++    if (result3)
++    {
++      Field *fields3 = result3->Fetch();
++      arenaItemId = fields3[0].GetUInt32();
++      tokensForArena = fields3[1].GetUInt32();
++      arenaGranted = fields3[2].GetUInt32();      
++      pPlayer->ADD_GOSSIP_ITEM( 9, "Trade Tokens for Arena Points", GOSSIP_SENDER_MAIN, 4000);
++    }
++    QueryResult_AutoPtr result4 = WorldDatabase.PQuery("SELECT `curr_item_id`, `curr_cost` FROM `npc_tokens` WHERE `type` = 4 AND `min_level` <= %i AND `max_level` >= %i LIMIT 1", playerLevel, playerLevel);
++    if (result4)    {
++      Field *fields4 = result4->Fetch();
++      skillItemId = fields4[0].GetUInt32();
++      tokensForMaxSkill = fields4[1].GetUInt32();
++      pPlayer->ADD_GOSSIP_ITEM( 9, "Trade Tokens for Maximum Skills", GOSSIP_SENDER_MAIN, 5000);
++    }
++
++    pPlayer->SEND_GOSSIP_MENU(pPlayer->GetGossipTextId(pCreature), pCreature->GetGUID());
++    return true;    
++}
++
++void SendDefaultMenu_npc_tokens(Player* pPlayer, Creature* pCreature, uint32 uiAction)
++{
++    // Not allowed if in combat.
++    if (pPlayer->isInCombat())
++    {
++      pPlayer->CLOSE_GOSSIP_MENU();
++      pCreature->MonsterSay("You are in combat!", LANG_UNIVERSAL, NULL);
++      return;
++    }
++    
++    // Process menu selection
++    switch(uiAction)
++    {
++        case 1000:
++            // Trade Tokens for Gold
++            if(pPlayer->HasItemCount(goldItemId, tokensForGold , true))
++            {
++                pPlayer->CLOSE_GOSSIP_MENU();
++                pPlayer->DestroyItemCount(goldItemId, tokensForGold, true);
++                pPlayer->ModifyMoney(goldGranted * 10000);
++                pCreature->MonsterWhisper("Here is your Gold.", pPlayer->GetGUID());
++            }
++            else
++            {
++                pPlayer->CLOSE_GOSSIP_MENU();
++                pCreature->MonsterSay("You do not have enough tokens!", LANG_UNIVERSAL, NULL);
++            }
++            break;
++
++        case 2000:
++            // Trade Tokens for Level
++            if(pPlayer->HasItemCount(levelItemId, tokensForLevel, true))
++            {
++                pPlayer->CLOSE_GOSSIP_MENU();
++                pPlayer->DestroyItemCount(levelItemId, tokensForLevel, true);
++                pPlayer->GiveLevel(pPlayer->getLevel() + levelsGranted);
++                pCreature->MonsterWhisper("Your level has been changed.", pPlayer->GetGUID());
++            }
++            else
++            {
++                pPlayer->CLOSE_GOSSIP_MENU();
++                pCreature->MonsterSay("You do not have enough tokens!", LANG_UNIVERSAL, NULL);
++            }
++            break;
++
++        case 3000:
++            // Trade Tokens for Honor Points
++            if(pPlayer->HasItemCount(honorItemId, tokensForHonor, true))
++            {
++                pPlayer->CLOSE_GOSSIP_MENU();
++                pPlayer->DestroyItemCount(honorItemId, tokensForHonor, true);
++                pPlayer->ModifyHonorPoints(+ honorGranted);
++                pCreature->MonsterWhisper("Here are your Honor Points.", pPlayer->GetGUID());
++            }
++            else
++            {
++                pPlayer->CLOSE_GOSSIP_MENU();
++                pCreature->MonsterSay("You do not have enough tokens!", LANG_UNIVERSAL, NULL);
++            }
++            break;
++ 
++        case 4000:
++            // Trade Tokens for Arena Points
++            if(pPlayer->HasItemCount(arenaItemId, tokensForArena, true))
++            {
++                pPlayer->CLOSE_GOSSIP_MENU();
++                pPlayer->DestroyItemCount(arenaItemId, tokensForArena, true);
++                pPlayer->ModifyArenaPoints(+ arenaGranted);
++                pCreature->MonsterWhisper("Here are your Arena Points.", pPlayer->GetGUID());
++            }
++            else
++            {
++                pPlayer->CLOSE_GOSSIP_MENU();
++                pCreature->MonsterSay("You do not have enough tokens!", LANG_UNIVERSAL, NULL);
++            }
++            break;
++
++        case 5000:
++            // Trade Tokens for MaxSkill
++            if(pPlayer->HasItemCount(skillItemId, tokensForMaxSkill, true))
++            {
++                pPlayer->CLOSE_GOSSIP_MENU();
++                pPlayer->DestroyItemCount(skillItemId, tokensForMaxSkill, true);
++                pPlayer->UpdateSkillsToMaxSkillsForLevel();
++                pCreature->MonsterWhisper("Your Skills are now at Maximum", pPlayer->GetGUID());
++            }
++            else
++            {
++                pPlayer->CLOSE_GOSSIP_MENU();
++                pCreature->MonsterSay("You do not have enough tokens!", LANG_UNIVERSAL, NULL);
++            }
++            break;
++    }
++}
++
++bool GossipSelect_npc_tokens(Player* pPlayer, Creature* pCreature, uint32 uiSender, uint32 uiAction)
++{
++    // Show menu
++    if (uiSender == GOSSIP_SENDER_MAIN)
++        SendDefaultMenu_npc_tokens(pPlayer, pCreature, uiAction);
++    return true;
++}
++
++void AddSC_npc_tokens()
++{
++    Script *newscript;
++    newscript = new Script;
++    newscript->Name = "npc_tokens";
++    newscript->pGossipHello = &GossipHello_npc_tokens;
++    newscript->pGossipSelect = &GossipSelect_npc_tokens;
++    newscript->RegisterSelf();
++}
++

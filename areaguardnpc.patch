@@ -1,0 +1,193 @@
+diff -Nuar oregoncore-current/sql/oc-patch/world-areaguardnpc.sql oregoncore-pq/sql/oc-patch/world-areaguardnpc.sql
+--- oregoncore-current/sql/oc-patch/world-areaguardnpc.sql	1969-12-31 19:00:00.000000000 -0500
++++ oregoncore-pq/sql/oc-patch/world-areaguardnpc.sql	2012-05-20 11:35:37.000000000 -0400
+@@ -0,0 +1,26 @@
++-- Table structure for table `npc_areaguard`
++
++CREATE TABLE IF NOT EXISTS `npc_areaguard` (
++  `creature_entry` mediumint(8) unsigned NOT NULL,
++  `guard_type` tinyint(3) unsigned NOT NULL default '0' COMMENT '0=All,1=Team,2=SecLvl,3=PlrLvl,4=Guild,5=PlrGuid',
++  `trigger_distance` float NOT NULL default '65' COMMENT 'In Feet - Max is 65',
++  `req_value` tinyint(3) unsigned NOT NULL default '0' COMMENT 'For Team 1=Ally,2=Horde',
++  `tele_map` mediumint(8) unsigned NOT NULL default '1' COMMENT 'Dflt tele dest is Ratchet',
++  `tele_x` float NOT NULL default '-955.726',
++  `tele_y` float NOT NULL default '-3747.16',
++  `tele_z` float NOT NULL default '5.47817',
++  `tele_o` float NOT NULL default '1.6369',
++  `comment` varchar(40) NOT NULL,
++  PRIMARY KEY  (`creature_entry`)
++) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='NPC Area Guard';
++
++-- Dumping data for table `npc_areaguard`
++
++INSERT INTO `npc_areaguard` (`creature_entry`, `guard_type`, `trigger_distance`, `req_value`, `tele_map`, `tele_x`, `tele_y`, `tele_z`, `tele_o`, `comment`) VALUES
++(92015, 0, 65, 0, 1, -955.726, -3747.16, 5.47817, 1.6369, 'Teleport all non-GM players to Ratchet');
++
++DELETE FROM `creature_template` WHERE `entry` = 92015;
++
++INSERT INTO `creature_template` (`entry`, `heroic_entry`, `modelid_A`, `modelid_A2`, `modelid_H`, `modelid_H2`, `name`, `subname`, `IconName`, `gossip_menu_id`, `minlevel`, `maxlevel`, `minhealth`, `maxhealth`, `minmana`, `maxmana`, `armor`, `faction_A`, `faction_H`, `npcflag`, `speed`, `scale`, `rank`, `mindmg`, `maxdmg`, `dmgschool`, `attackpower`, `baseattacktime`, `rangeattacktime`, `unit_flags`, `dynamicflags`, `family`, `trainer_type`, `trainer_spell`, `class`, `race`, `minrangedmg`, `maxrangedmg`, `rangedattackpower`, `type`, `type_flags`, `lootid`, `pickpocketloot`, `skinloot`, `resistance1`, `resistance2`, `resistance3`, `resistance4`, `resistance5`, `resistance6`, `spell1`, `spell2`, `spell3`, `spell4`, `PetSpellDataId`, `mingold`, `maxgold`, `AIName`, `MovementType`, `InhabitType`, `RacialLeader`, `RegenHealth`, `equipment_id`, `mechanic_immune_mask`, `flags_extra`, `ScriptName`) VALUES
++(92015, 0, 10458, 0, 0, 0, 'Guard', '', NULL, 0, 70, 70, 12000, 12000, 4000, 4000, 12000, 35, 35, 129, 8, 1, 0, 2000, 50000, 0, 0, 2000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 20, 20, 20, 20, 20, 20, 0, 0, 0, 0, 0, 521411, 521411, '', 0, 3, 0, 1, 0, 0, 0, 'npc_areaguard');
++
+diff -Nuar oregoncore-current/src/game/ScriptLoader.cpp oregoncore-pq/src/game/ScriptLoader.cpp
+--- oregoncore-current/src/game/ScriptLoader.cpp	2012-05-20 11:29:49.000000000 -0400
++++ oregoncore-pq/src/game/ScriptLoader.cpp	2012-05-20 11:35:37.000000000 -0400
+@@ -21,6 +21,9 @@
+ 
+ #ifdef SCRIPTS
+ 
++//custom
++void AddSC_npc_areaguard();
++
+ //examples
+ //void AddSC_custom_example();
+ //void AddSC_custom_gossip_codebox();
+@@ -393,6 +396,10 @@
+ void AddScripts()
+ {
+ #ifdef SCRIPTS
++
++    //Custom
++    AddSC_npc_areaguard();
++
+ //    AddSC_custom_example();
+ //    AddSC_custom_gossip_codebox();
+ //    AddSC_test();
+diff -Nuar oregoncore-current/src/scripts/Custom/npc_areaguard.cpp oregoncore-pq/src/scripts/Custom/npc_areaguard.cpp
+--- oregoncore-current/src/scripts/Custom/npc_areaguard.cpp	1969-12-31 19:00:00.000000000 -0500
++++ oregoncore-pq/src/scripts/Custom/npc_areaguard.cpp	2012-05-20 11:35:37.000000000 -0400
+@@ -0,0 +1,135 @@
++#include "ScriptPCH.h"
++
++/*******************************************************
++ * npc_areaguard
++ *******************************************************/
++
++struct npc_areaguardAI : public Scripted_NoMovementAI
++{
++    npc_areaguardAI(Creature* pCreature) : Scripted_NoMovementAI(pCreature)
++    {
++        pCreature->SetFlag(UNIT_FIELD_FLAGS, UNIT_FLAG_NON_ATTACKABLE);
++        pCreature->ApplySpellImmune(0, IMMUNITY_DAMAGE, SPELL_SCHOOL_NORMAL, true);
++        pCreature->ApplySpellImmune(0, IMMUNITY_DAMAGE, SPELL_SCHOOL_MASK_MAGIC, true);
++    }
++
++    void Reset(){}
++
++    void Aggro(Unit* /*pWho*/){}
++
++    void AttackStart(Unit* /*pWho*/){}
++
++    void MoveInLineOfSight(Unit *pWho)
++    {
++        // Return if Distance is greater than maximum (65 ft) - saves data reads
++        if (!me->IsWithinDist(pWho, 65.0f, false))
++            return;
++
++        extern DatabaseType WorldDatabase;
++        uint32 creatureID = me->GetEntry();
++        uint32 guardType;
++        uint32 triggerDist;
++        uint32 reqValue;
++        uint32 teleMap;
++        float teleX,teleY,teleZ,teleO;
++
++        QueryResult_AutoPtr result = WorldDatabase.PQuery("SELECT `guard_type`, `trigger_distance`, `req_value`,`tele_map`,`tele_x`,`tele_y`,`tele_z`,`tele_o` FROM `npc_areaguard` WHERE `creature_entry` = %i LIMIT 1",creatureID);
++        if (result)
++        {
++            Field *fields = result->Fetch();
++            guardType = fields[0].GetUInt32();
++            triggerDist = fields[1].GetFloat();
++            reqValue = fields[2].GetUInt32();
++            teleMap = fields[3].GetUInt32();
++            teleX = fields[4].GetFloat();
++            teleY = fields[5].GetFloat();
++            teleZ = fields[6].GetFloat();
++            teleO = fields[7].GetFloat();
++        } else {
++            return;
++        }
++
++        if (!pWho || !pWho->IsInWorld())
++            return;
++
++        // Return if distance is greater than the trigger_distance
++        if (!me->IsWithinDist(pWho, triggerDist, false))
++            return;
++
++        Player *pPlayer = pWho->GetCharmerOrOwnerPlayerOrPlayerItself();
++
++        // Return if player has GM flag on or is in process of teleport
++        if (!pPlayer || pPlayer->isGameMaster() || pPlayer->IsBeingTeleported())
++            return;
++
++        switch (guardType)
++        {
++            case 0:
++                // Action on all players without GM flag on
++                pPlayer->TeleportTo(teleMap,teleX,teleY,teleZ,teleO);
++                break;
++            case 1:
++                {
++                // Action based on Team
++                if (reqValue == 1) // Alliance Required 
++                    if (pPlayer->GetTeam() != 469) // Player is Horde
++                        pPlayer->TeleportTo(teleMap,teleX,teleY,teleZ,teleO);
++                if (reqValue == 2) // Horde Required
++                    if (pPlayer->GetTeam() != 67) // Player is Alliance
++                        pPlayer->TeleportTo(teleMap,teleX,teleY,teleZ,teleO);
++                }
++                break;
++            case 2:
++                {
++                // Action based on GM Level
++                if (pPlayer->GetSession()->GetSecurity() < reqValue)
++                    pPlayer->TeleportTo(teleMap,teleX,teleY,teleZ,teleO);
++                }
++                break;
++            case 3:
++                {
++                // Action based on Player Level
++                if (pPlayer->getLevel() < reqValue)
++                    pPlayer->TeleportTo(teleMap,teleX,teleY,teleZ,teleO);
++                }
++                break;
++            case 4:
++                {
++                // Action based on Guild ID
++                if (pPlayer->GetGuildId() != reqValue)
++                    pPlayer->TeleportTo(teleMap,teleX,teleY,teleZ,teleO);
++                }
++                break;
++            case 5:
++                {
++                // Action based on Player GUID
++                if (pPlayer->GetGUID() != reqValue)
++                    pPlayer->TeleportTo(teleMap,teleX,teleY,teleZ,teleO);
++                }
++                break;
++        }
++ 
++        float x,y,z,o;
++        me->GetHomePosition(x,y,z,o);
++        me->SetOrientation(o);
++        return;
++    }
++
++    void UpdateAI(const uint32 /*diff*/){}
++};
++
++CreatureAI* GetAI_npc_areaguard(Creature* pCreature)
++{
++    return new npc_areaguardAI(pCreature);
++}
++
++void AddSC_npc_areaguard()
++{
++    Script *newscript;
++
++    newscript = new Script;
++    newscript->Name = "npc_areaguard";
++    newscript->GetAI = &GetAI_npc_areaguard;
++    newscript->RegisterSelf();
++}
++

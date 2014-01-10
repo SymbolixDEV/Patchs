@@ -1,0 +1,162 @@
+diff -Nuar oregoncore-current/src/game/Level2.cpp oregoncore-pq/src/game/Level2.cpp
+--- oregoncore-current/src/game/Level2.cpp	2012-05-20 11:29:48.000000000 -0400
++++ oregoncore-pq/src/game/Level2.cpp	2012-05-20 11:35:54.000000000 -0400
+@@ -56,6 +56,10 @@
+ //mute player for some times
+ bool ChatHandler::HandleMuteCommand(const char* args)
+ {
++
++    std::string announce;
++    std::string mutesecname;
++
+     if (!*args)
+         return false;
+ 
+@@ -72,7 +76,7 @@
+     char *mutereason = strtok(NULL, "");
+     std::string mutereasonstr;
+     if (!mutereason)
+-        mutereasonstr = "No reason.";
++        mutereasonstr = "TOS Infraction";
+     else
+         mutereasonstr = mutereason;
+ 
+@@ -129,6 +133,28 @@
+ 
+     PSendSysMessage(LANG_YOU_DISABLE_CHAT, cname.c_str(), notspeaktime, mutereasonstr.c_str());
+ 
++    if (sWorld.getConfig(CONFIG_SHOW_KICK_IN_WORLD) == 1)
++    {
++        if ( m_session->GetSecurity() == 1 )
++            mutesecname = "GameMaster";
++        if ( m_session->GetSecurity() == 2 )
++            mutesecname = "Moderator";
++        if ( m_session->GetSecurity() == 3 )
++            mutesecname = "Administrator";
++        if ( m_session->GetSecurity() == 4 )
++            mutesecname = "System";
++
++        announce = "The character '";
++        announce += charname;
++        announce += "' was muted for ";
++        announce += timetonotspeak;
++        announce += " minutes by the ";
++        announce += mutesecname;
++        announce += ". The reason is: ";
++        announce += mutereason;
++        HandleAnnounceCommand(announce.c_str());
++    }
++
+     return true;
+ }
+ 
+@@ -1847,10 +1873,14 @@
+ //kick player
+ bool ChatHandler::HandleKickPlayerCommand(const char *args)
+ {
++
++    std::string announce;
++    std::string kicksecname;
++
+     const char* kickName = strtok((char*)args, " ");
+     char* kickReason = strtok(NULL, "\n");
+-    std::string reason = "No Reason";
+-    std::string kicker = "Console";
++    std::string reason = "TOS Infraction";
++    std::string kicker = "System";
+     if (kickReason)
+         reason = kickReason;
+     if (m_session)
+@@ -1875,7 +1905,21 @@
+ 
+         if (sWorld.getConfig(CONFIG_SHOW_KICK_IN_WORLD) == 1)
+         {
+-            sWorld.SendWorldText(LANG_COMMAND_KICKMESSAGE, player->GetName(), kicker.c_str(), reason.c_str());
++            if ( m_session->GetSecurity() == 1 )
++                kicksecname = "GameMaster";
++            if ( m_session->GetSecurity() == 2 )
++                kicksecname = "Moderator";
++            if ( m_session->GetSecurity() == 3 )
++                kicksecname = "Administrator";   
++            if ( m_session->GetSecurity() == 4 )
++                kicksecname = "System";
++
++            announce = "The character '";
++            announce += player->GetName();
++            announce += "' was kicked by the ";
++            announce += kicksecname;
++            announce += ".";
++            HandleAnnounceCommand(announce.c_str());
+         }
+         else
+         {
+@@ -1920,8 +1964,20 @@
+         {
+             if (sWorld.getConfig(CONFIG_SHOW_KICK_IN_WORLD) == 1)
+             {
+-
+-                sWorld.SendWorldText(LANG_COMMAND_KICKMESSAGE, name.c_str(), kicker.c_str(), reason.c_str());
++                if ( m_session->GetSecurity() == 1 )
++                    kicksecname = "GameMaster";
++                if ( m_session->GetSecurity() == 2 )
++                    kicksecname = "Moderator";
++                if ( m_session->GetSecurity() == 3 )
++                    kicksecname = "Administrator";
++                if ( m_session->GetSecurity() == 4 )
++                    kicksecname = "System";
++                announce = "The character '";
++                announce += player->GetName();
++                announce += "' was kicked by the ";
++                announce += kicksecname;
++                announce += ".";            
++                HandleAnnounceCommand(announce.c_str());
+             }
+             else
+             {
+diff -Nuar oregoncore-current/src/game/Level3.cpp oregoncore-pq/src/game/Level3.cpp
+--- oregoncore-current/src/game/Level3.cpp	2012-05-20 11:29:48.000000000 -0400
++++ oregoncore-pq/src/game/Level3.cpp	2012-05-20 11:35:54.000000000 -0400
+@@ -5632,6 +5632,9 @@
+     if (!*args)
+         return false;
+ 
++    std::string announce;
++    std::string bansecname;
++
+     char* cnameOrIP = strtok ((char*)args, " ");
+     if (!cnameOrIP)
+         return false;
+@@ -5697,6 +5700,33 @@
+             return false;
+     }
+ 
++    if (sWorld.getConfig(CONFIG_SHOW_KICK_IN_WORLD) == 1)
++    {
++        if ( m_session->GetSecurity() == 1 )
++            bansecname = "GameMaster";
++        if ( m_session->GetSecurity() == 2 )
++            bansecname = "Moderator";
++        if ( m_session->GetSecurity() == 3 )
++            bansecname = "Administrator";
++        if ( m_session->GetSecurity() == 4 )
++            bansecname = "System";
++
++        if (mode == BAN_CHARACTER)
++            announce = "The character '";
++        else if (mode == BAN_IP)
++            announce = "The IP '";
++        else
++            announce = "Account '";
++        announce += nameOrIP.c_str();
++        announce += "' was banned for ";
++        announce += duration;
++        announce += " by the ";
++        announce += bansecname;
++        announce += ". The reason is: ";
++        announce += reason;
++        HandleAnnounceCommand(announce.c_str());
++    }
++
+     return true;
+ }
+ 

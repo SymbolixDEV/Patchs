@@ -1,0 +1,120 @@
+diff -Nuar oregoncore-current/src/game/ScriptLoader.cpp oregoncore-pq/src/game/ScriptLoader.cpp
+--- oregoncore-current/src/game/ScriptLoader.cpp	2012-05-20 11:29:49.000000000 -0400
++++ oregoncore-pq/src/game/ScriptLoader.cpp	2012-05-20 11:40:34.000000000 -0400
+@@ -21,6 +21,9 @@
+ 
+ #ifdef SCRIPTS
+ 
++//custom
++void AddSC_npc_rentalmount();
++
+ //examples
+ //void AddSC_custom_example();
+ //void AddSC_custom_gossip_codebox();
+@@ -393,6 +396,10 @@
+ void AddScripts()
+ {
+ #ifdef SCRIPTS
++
++    //Custom
++    AddSC_npc_rentalmount();
++
+ //    AddSC_custom_example();
+ //    AddSC_custom_gossip_codebox();
+ //    AddSC_test();
+diff -Nuar oregoncore-current/src/oregoncore/oregoncore.conf.dist oregoncore-pq/src/oregoncore/oregoncore.conf.dist
+--- oregoncore-current/src/oregoncore/oregoncore.conf.dist	2012-05-20 11:29:49.000000000 -0400
++++ oregoncore-pq/src/oregoncore/oregoncore.conf.dist	2012-05-20 11:40:34.000000000 -0400
+@@ -1897,6 +1897,14 @@
+ ###############################################################################
+ # CUSTOM SERVER OPTIONS
+ #
++#    RentalMountNPC.SlowPrice
++#        Price in copper for regular mount.
++#        Default: 100 (1 silver)
++#
++#    RentalMountNPC.FastPrice
++#        Price in copper for swift mount.
++#        Default: 500 (5 silver)
++#
+ #    PlayerStart.AllReputation
+ #        Players will start with most of the high level reputations that are
+ #         needed for items, mounts etc.
+@@ -1989,6 +1997,8 @@
+ #
+ ###############################################################################
+ 
++RentalMountNPC.SlowPrice = 100
++RentalMountNPC.FastPrice = 500
+ PlayerStart.AllReputation = 0
+ PlayerStart.AllSpells = 0
+ PlayerStart.MapsExplored = 0
+diff -Nuar oregoncore-current/src/scripts/Custom/npc_rentalmount.cpp oregoncore-pq/src/scripts/Custom/npc_rentalmount.cpp
+--- oregoncore-current/src/scripts/Custom/npc_rentalmount.cpp	1969-12-31 19:00:00.000000000 -0500
++++ oregoncore-pq/src/scripts/Custom/npc_rentalmount.cpp	2012-05-20 11:40:34.000000000 -0400
+@@ -0,0 +1,65 @@
++#include "ScriptPCH.h" 
++#include "Config/Config.h"
++
++#define MSG_GOSSIP_TEXT_1  "I would like to rent a mount." 
++#define MSG_GOSSIP_TEXT_2  "I would like to rent a very fast mount." 
++#define MSG_NOT_MONEY      "You do not have enough money." 
++#define MSG_MOUTED         "You already have a mount." 
++#define MOUNT_SPELL_ID_1   43899 
++#define MOUNT_SPELL_ID_2   43900 
++
++bool GossipHello_npc_rentalmount(Player *player, Creature *_creature) 
++{ 
++    player->ADD_GOSSIP_ITEM(4, MSG_GOSSIP_TEXT_1, GOSSIP_SENDER_MAIN, 1001); 
++    player->ADD_GOSSIP_ITEM(4, MSG_GOSSIP_TEXT_2, GOSSIP_SENDER_MAIN, 1002); 
++    player->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE, _creature->GetGUID()); 
++    return true; 
++} 
++
++bool GossipSelect_npc_rentalmount(Player *player, Creature *_creature, uint32 sender, uint32 action ) 
++{ 
++    if (sender != GOSSIP_SENDER_MAIN) 
++        return false; 
++
++    if (player->IsMounted()){ 
++        _creature->MonsterWhisper(MSG_MOUTED, player->GetGUID()); 
++         return false; 
++    } 
++
++    uint32 slowprice = sConfig.GetIntDefault("RentalMountNPC.SlowPrice",100);
++    uint32 fastprice = sConfig.GetIntDefault("RentalMountNPC.FastPrice",500);
++
++    switch (action) 
++    { 
++    case 1001: 
++        if (player->GetMoney() < slowprice) 
++        { 
++            _creature->MonsterWhisper(MSG_NOT_MONEY, player->GetGUID()); 
++        } else { 
++            player->AddAura(MOUNT_SPELL_ID_1,    player); 
++            player->ModifyMoney(-slowprice); 
++        } 
++        break; 
++    case 1002: 
++        if (player->GetMoney() < fastprice) 
++        { 
++            _creature->MonsterWhisper(MSG_NOT_MONEY, player->GetGUID()); 
++        } else { 
++            player->AddAura(MOUNT_SPELL_ID_2,    player); 
++            player->ModifyMoney(-fastprice); 
++        } 
++        break; 
++    } 
++    player->CLOSE_GOSSIP_MENU();
++    return true; 
++} 
++
++void AddSC_npc_rentalmount() 
++{ 
++     Script *newscript; 
++     newscript = new Script; 
++     newscript->Name = "npc_rentalmount"; 
++     newscript->pGossipHello = &GossipHello_npc_rentalmount; 
++     newscript->pGossipSelect = &GossipSelect_npc_rentalmount; 
++     newscript->RegisterSelf(); 
++}
