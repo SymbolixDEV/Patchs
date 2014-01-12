@@ -1,4 +1,4 @@
-TransmogDisplay
+Patch 3.3.5a Trinity
 ===============
 
-Transmog
+Patch 3.3.5a TrinityCore 
