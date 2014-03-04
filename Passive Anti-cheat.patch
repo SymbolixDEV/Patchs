@@ -589,7 +589,7 @@ diff --git a/src/server/game/Server/Protocol/Handlers/MovementHandler.cpp b/src/
 +                            {
 +                                if (fabs(fCoreDistance - fDistance2d) > sWorld.getFloatConfig(CONFIG_ANTICHEAT_MAX_DISTANCE_DIFF_ALLOWED))
 +                                {
-+                                    sLog.outError("Cheater! guid %u name %s fCoreDistance %f fDistance2d %f uiDiffTime %u fSpeedRate %f Latency %u",plMover->GetGUIDLow(),plMover->GetName(),fCoreDistance,fDistance2d,uiDiffTime,fSpeedRate, plMover->GetSession()->GetLatency());
++                                    TC_LOG_ERROR("Cheater! guid %u name %s fCoreDistance %f fDistance2d %f uiDiffTime %u fSpeedRate %f Latency %u",plMover->GetGUIDLow(),plMover->GetName(),fCoreDistance,fDistance2d,uiDiffTime,fSpeedRate, plMover->GetSession()->GetLatency());
 +                                    plMover->ElaborateCheatReport(plMover,1);
 +                                }
 +                            }
@@ -613,7 +613,7 @@ diff --git a/src/server/game/Server/Protocol/Handlers/MovementHandler.cpp b/src/
 
 +                {
 
-+                    sLog.outError("Cheater! guid %u name %s Latency %u",plMover->GetGUIDLow(),plMover->GetName(), plMover->GetSession()->GetLatency());
++                    TC_LOG_ERROR("Cheater! guid %u name %s Latency %u",plMover->GetGUIDLow(),plMover->GetName(), plMover->GetSession()->GetLatency());
 
 +                   plMover->ElaborateCheatReport(plMover,3);
 
@@ -633,7 +633,7 @@ diff --git a/src/server/game/Server/Protocol/Handlers/MovementHandler.cpp b/src/
 
 +                {
 
-+                    sLog.outError("Cheater! guid %u name %s Latency %u",plMover->GetGUIDLow(),plMover->GetName(), plMover->GetSession()->GetLatency());
++                    TC_LOG_ERROR("Cheater! guid %u name %s Latency %u",plMover->GetGUIDLow(),plMover->GetName(), plMover->GetSession()->GetLatency());
 
 +                    plMover->ElaborateCheatReport(plMover,2);
 
