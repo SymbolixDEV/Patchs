@@ -1,0 +1,29 @@
+##########################################################################
+############ This will be a little version tracker #######################
+
+(Current) Version 1.8 - Compitable with FusionCMS v6.1.7
+  - Fixed the "Cant afford" issues.
+
+Version 1.7 - Compitable with FusionCMS v6.1.7
+  - Fixed the cart, it's now stored in a session.
+
+Version 1.6 - Compitable with FusionCMS v6.1.7
+  - More fixes at the Order logs.
+
+ Version 1.5 - Compitable with FusionCMS v6.1.7
+  - Fixed strange bug where the store was trying to submit empty query to the DB.
+
+ Version 1.4 - Compitable with FusionCMS v6.1.7
+  - Fixed the ACP Order logs.
+
+ Version 1.3 - Compitable with FusionCMS v6.1.7
+  - Fixed the search input width.
+
+ Version 1.2 - Compitable with FusionCMS v6.1.7
+  - Fixed the checkbox "Make sure the selected character is offline".
+
+ Version 1.1 - Compitable with FusionCMS v6.1.7
+  - Fixed saved realms related bug.
+
+ Version 1.0 - Compitable with FusionCMS v6.1.7
+  - Initial release.

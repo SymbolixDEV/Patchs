@@ -1,0 +1,46 @@
+////////////////////////////////////////////////////////////////
+-- FROZEN THEME ------------------------------------------------
+-- Read Me -----------------------------------------------------
+////////////////////////////////////////////////////////////////
+
+* All .psd files can be found in ".psd file" folder.
+
+* Before editing any of the .psd files please install the fonts 
+  provided in the "Fonts" folder!
+
+////////////////////////////////////////////////////////////////
+
+
+
+
+? HOW TO EDIT AND MAKE YOUR OWN LOGO
+-----------------------------------------------------------------
+! Open "LOGO - How-To.jpg" and follow the steps to make the logo!
+
+
+
+? HOW TO USE OTHER BACKGROUND Images
+-----------------------------------------------------------------
+! Open the folder "Backgrounds" and choose the image you like. 
+  Rename this image to "bg.jpg" and replace it with file "bg.jpg" 
+  placed in FusionCMSFolder\application\themes\frozen_theme\images.
+
+
+
+? SLIDER IMAGES
+-----------------------------------------------------------------
+! Open the folder ".psd files" and you will find 3 psd files 
+  
+    slider-image-1.psd
+    slider-image-2.psd
+    slider-image-3.psd
+    slider-image-4.psd
+
+  You can Open and edit every slider for your needs.
+  Layers marked with Green color are main title, description text layers 
+  are marked with Red.
+  Do not change the size of the images, just save them as .jpg.
+
+
+
+

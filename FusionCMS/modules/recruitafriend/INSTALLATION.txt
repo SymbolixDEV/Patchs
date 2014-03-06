@@ -1,0 +1,15 @@
+
+This module modifies the register module to add a support for referral links such as :
+http://yourwebsite.com/register?r={recruiterid}
+
+It adds a module for players to see their recruiter link and see if they can claim their reward.
+Reward can be DP or VP and are claimable after a defined minimum played time.
+
+
+
+	1. Execute the .sql script in your FusionCMS database
+
+	2. Place the register and recruitafriend folder in your modules folder
+
+	3. Edit the recruitafriend/config/recruitafriend.php for your convenience (Can be done via the ACP)
+        4. ACP > Menu Links > Create Link. Set the URL to: recruitafriend

@@ -1,0 +1,24 @@
+{
+	"name": "Character Tools V2.1",
+	"description": "Enables your users to use blizzlike character tools.",
+	"author": {
+		"name": "Agressiphe",
+		"website": "http://agressiphe-graphics.tk/"
+	},
+	
+	"permissions": {
+		"view": {"default" : true, "description": "View the character tools screen." }
+	},
+
+	"roles": {
+		"view": {
+			"description": "View the character tools module.",
+			
+			"permissions": {
+				"view": true
+			}
+		}
+	},
+
+	"enabled": true
+}

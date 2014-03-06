@@ -1,0 +1,49 @@
+{
+	"name": "Character Transfer (Account)",
+	"description": "Tranfers characters from account to account.",
+	"author": {
+		"name": "ChoMPi",
+		"website": "http://www.wow-market.com/"
+	},
+	
+	"admin": [
+		{
+			"text": "Store",
+			"icon": "share",
+			"links": [
+				{
+					"text": "Character transfer logs",
+					"icon": "list",
+					"controller": "admin",
+					"requirePermission": "viewAdmin"
+				}
+			]
+		}
+	],
+
+	"permissions": {
+		"use_cta": {"default" : true, "description": "Allow character transfers." },
+		"viewAdmin": {"default" : false, "description": "View the character transfer logs." }
+	},
+
+	"roles": {
+		"use": {
+			"description": "Allow character transfers.",
+
+			"permissions": {
+				"use_cta": true
+			}
+		},
+
+		"administrate": {
+			"description": "View the character transfer logs.",
+			"dangerLevel": 2,
+
+			"permissions": {
+				"viewAdmin": true
+			}
+		}
+	},
+	
+	"enabled": true
+}

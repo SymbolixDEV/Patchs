@@ -1,0 +1,60 @@
+{
+	"name": "User panel",
+	"description": "Displays user info and provides them with a set of links",
+	"author": {
+		"name": "FusionCMS",
+		"website": "http:\/\/raxezdev.com\/fusioncms"
+	},
+	
+	"admin": [
+		{
+			"text": "Website",
+			"icon": "cursor",
+			"links": [
+				{
+					"text": "Manage UCP",
+					"icon": "list",
+					"controller": "admin",
+					"requirePermission": "manageAdmin"
+				}
+			]
+		}
+	],
+
+    "permissions": {
+        "view": {"default" : true, "description": "View the ucp screen." },
+		"manageAdmin": {"default" : false, "description": "Can manage the User Control Panel." },
+        "canUpdateAccountSettings": {"default": true, "description": "Can update the account settings as password, location."},
+        "canChangeExpansion": {"default" : true, "description": "Can update the expansion." }
+    },
+	
+    "roles": {
+        "view": {
+            "description": "View the ucp module.",
+
+            "permissions": {
+                "view": true
+            }
+        },
+
+        "updateAccount": {
+            "description": "Can update the account info",
+
+            "permissions": {
+                "canUpdateAccountSettings": true,
+                "canChangeExpansion": true
+            }
+        },
+		
+		"administrate": {
+			"description": "Can manage the User Control Panel.",
+			"dangerLevel": 2,
+
+			"permissions": {
+				"manageAdmin": true
+			}
+		}
+    },
+
+	"enabled": true
+}

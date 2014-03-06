@@ -1,0 +1,697 @@
+@charset "utf-8";
+
+/**
+ * This stylesheet contains both general
+ * and certain module specific selectors.
+ * You should edit the colors to suit your
+ * theme. You can also override their module
+ * provided default styles like font-size,
+ * margin and padding.
+ *
+ * If you need to look up the default styles
+ * of a selector, please refer to:
+ * /application/css/default.css
+ */
+
+/* News pagination link states */
+#news_pagination a, #messages_pagination a {
+	margin:0px;
+	display:block;
+}
+#messages_pagination a {
+	color: rgb(128, 124, 115) !important;
+}
+#messages_pagination a:hover {
+	color: #444 !important;
+}
+.location {
+	border:1px solid #0E171E;
+	background-color:rgba(7,14,18,0.8);
+}
+
+.location_name {
+	color:#CF9139;
+}
+
+.location:hover {
+	background-color:rgba(7,14,18,1);
+}
+
+/* Slider text bar */
+.caption {
+	background-color:rgba(0,0,0,0.6);
+	color:#fff;
+}
+
+#slider_next,
+#slider_previous {
+	color:#fff;
+	background-color:rgba(0,0,0,0.6);
+}
+
+#slider_next:hover,
+#slider_previous:hover {
+	background-color:#000;
+}
+
+#store {
+	margin-left:-8px;
+} 
+
+/* News comments styles */
+.comment {
+	width: 354px;
+	padding: 8px;
+	line-height: 1.5;
+	margin-bottom: 15px;
+	overflow: hidden;
+	word-break: normal !important;
+}
+.staff_comment .comment_author {
+	color:#239afe !important;
+	font-family:Verdana, Geneva, sans-serif;
+	font-weight: normal !important;
+}
+.comment_author {
+	font-weight: normal !important;
+}
+.comment, .message_box {
+	width:345px !important;
+	border:1px solid #0c0302 !important;
+	background-color:rgba(23,6,2,.6) !important;
+	color:inherit !important;
+	box-shadow:none !important;
+	-webkit-box-shadow:none !important;
+	-moz-box-shadow:none !important;
+	word-break: break-all;
+}
+
+.comment a img, .message_box a img {
+	border:1px solid #000 !important;
+	box-shadow:none !important;
+	-moz-box-shadow:none !important;
+	-webkit-box-shadow:none !important;
+}
+
+.comment_author:hover, .message_box_author:hover {
+	color:#fff !important;
+}
+
+.comment_date, .message_box_date {
+	color:#6c4c1e !important;
+	font-family:Verdana, Geneva, sans-serif !important;
+	font-size:11px !important;
+}
+/* Comments and shoutbox: characters remaining indicator text */
+.characters_remaining {
+	font-size: 11px;
+	margin-top: 12px;
+	font-family: Verdana, Geneva, sans-serif;
+	color: #8E6942;
+	font-weight: normal !important;
+}
+
+#poll_answers .poll_answer {
+	margin-left:10px;
+}
+
+/* Modal boxes: alert & confirm */
+.popup {
+	background-color:#eee;
+	border:1px solid #fff;
+	box-shadow:0px 0px 35px #000;
+	-webkit-box-shadow:0px 0px 35px #000;
+	-moz-box-shadow:0px 0px 35px #000;
+}
+
+.popup a {
+	color: #fff;
+}
+
+.popup a:hover {
+	color:#fff;
+}
+
+.popup_button {
+	background-color: #7fbf4d;
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #7fbf4d), color-stop(100%, #63a62f));
+	background-image: -webkit-linear-gradient(top, #7fbf4d, #63a62f);
+	background-image: -moz-linear-gradient(top, #7fbf4d, #63a62f);
+	background-image: -ms-linear-gradient(top, #7fbf4d, #63a62f);
+	background-image: -o-linear-gradient(top, #7fbf4d, #63a62f);
+	background-image: linear-gradient(top, #7fbf4d, #63a62f);
+	border: 1px solid #63a62f;
+	border-bottom: 1px solid #5b992b;
+	-webkit-box-shadow: inset 0 1px 0 0 #96ca6d;
+	-moz-box-shadow: inset 0 1px 0 0 #96ca6d;
+	-ms-box-shadow: inset 0 1px 0 0 #96ca6d;
+	-o-box-shadow: inset 0 1px 0 0 #96ca6d;
+	box-shadow: inset 0 1px 0 0 #96ca6d;
+	text-shadow: 0 -1px 0 #4c9021;
+}
+
+.popup_button:hover {
+	 background-color: #76b347;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #76b347), color-stop(100%, #5e9e2e));
+    background-image: -webkit-linear-gradient(top, #76b347, #5e9e2e);
+    background-image: -moz-linear-gradient(top, #76b347, #5e9e2e);
+    background-image: -ms-linear-gradient(top, #76b347, #5e9e2e);
+    background-image: -o-linear-gradient(top, #76b347, #5e9e2e);
+    background-image: linear-gradient(top, #76b347, #5e9e2e);
+    -webkit-box-shadow: inset 0 1px 0 0 #8dbf67;
+    -moz-box-shadow: inset 0 1px 0 0 #8dbf67;
+    -ms-box-shadow: inset 0 1px 0 0 #8dbf67;
+    -o-box-shadow: inset 0 1px 0 0 #8dbf67;
+    box-shadow: inset 0 1px 0 0 #8dbf67;
+}
+
+.popup_button:active {
+	border: 1px solid #5b992b;
+    border-bottom: 1px solid #538c27;
+    -webkit-box-shadow: inset 0 0 8px 4px #548c29, 0 1px 0 0 #eeeeee;
+    -moz-box-shadow: inset 0 0 8px 4px #548c29, 0 1px 0 0 #eeeeee;
+    -ms-box-shadow: inset 0 0 8px 4px #548c29, 0 1px 0 0 #eeeeee;
+    -o-box-shadow: inset 0 0 8px 4px #548c29, 0 1px 0 0 #eeeeee;
+    box-shadow: inset 0 0 8px 4px #548c29, 0 1px 0 0 #eeeeee;
+}
+
+.popup_hide {
+	background-color: #bfbfbf;
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #bfbfbf), color-stop(100%, #9a9a9a));
+	background-image: -webkit-linear-gradient(top, #bfbfbf, #9a9a9a);
+	background-image: -moz-linear-gradient(top, #bfbfbf, #9a9a9a);
+	background-image: -ms-linear-gradient(top, #bfbfbf, #9a9a9a);
+	background-image: -o-linear-gradient(top, #bfbfbf, #9a9a9a);
+	background-image: linear-gradient(top, #bfbfbf, #9a9a9a);
+	border: 1px solid #9a9a9a;
+	border-bottom: 1px solid #9a9a9a;
+	-webkit-box-shadow: inset 0 1px 0 0 #cbcbcb;
+	-moz-box-shadow: inset 0 1px 0 0 #cbcbcb;
+	-ms-box-shadow: inset 0 1px 0 0 #cbcbcb;
+	-o-box-shadow: inset 0 1px 0 0 #cbcbcb;
+	box-shadow: inset 0 1px 0 0 #cbcbcb;
+	text-shadow: 0 -1px 0 #8f8f8f;
+}
+
+.popup_hide:hover {
+	background-color: #adadad;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #adadad), color-stop(100%, #a0a0a0));
+    background-image: -webkit-linear-gradient(top, #adadad, #a0a0a0);
+    background-image: -moz-linear-gradient(top, #adadad, #a0a0a0);
+    background-image: -ms-linear-gradient(top, #adadad, #a0a0a0);
+    background-image: -o-linear-gradient(top, #adadad, #a0a0a0);
+    background-image: linear-gradient(top, #adadad, #a0a0a0);
+    -webkit-box-shadow: inset 0 1px 0 0 #bbbbbb;
+    -moz-box-shadow: inset 0 1px 0 0 #bbbbbb;
+    -ms-box-shadow: inset 0 1px 0 0 #bbbbbb;
+    -o-box-shadow: inset 0 1px 0 0 #bbbbbb;
+    box-shadow: inset 0 1px 0 0 #bbbbbb;
+}
+
+.popup_hide:active {
+	border: 1px solid #a0a0a0;
+    border-bottom: 1px solid #8b8b8b;
+    -webkit-box-shadow: inset 0 0 8px 4px #8c8c8c, 0 1px 0 0 #eeeeee;
+    -moz-box-shadow: inset 0 0 8px 4px #8c8c8c, 0 1px 0 0 #eeeeee;
+    -ms-box-shadow: inset 0 0 8px 4px #8c8c8c, 0 1px 0 0 #eeeeee;
+    -o-box-shadow: inset 0 0 8px 4px #8c8c8c, 0 1px 0 0 #eeeeee;
+    box-shadow: inset 0 0 8px 4px #8c8c8c, 0 1px 0 0 #eeeeee;
+}
+
+#popup_bg {
+	background-color:#000;
+}
+
+/* Tooltip */
+#tooltip, .tooltip {
+	background-color:#070c21;
+	background-color: rgba(7,12,33,0.9);
+	border:1px solid #777777;
+	border-top:1px solid #cfcfcf;
+	-webkit-box-shadow: 0px 0px 3px #000;
+	-moz-box-shadow: 0px 0px 3px #000;
+	box-shadow: 0px 0px 3px #000;
+	color: #fff;
+}
+
+/* Form fields */
+textarea {
+	padding:8px;
+	border-radius:2px;
+	-moz-border-radius:2px;
+	-webkit-border-radius:2px;
+	-webkit-transition: all 300ms;
+	-moz-transition: all 300ms;
+	-o-transition: all 300ms;
+	-ms-transition: all 300ms;
+	transition: all 300ms;
+	background: #160602;
+	border: 1px solid #440B03;
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 11px;
+	color: #7A5A38;
+}
+select {
+	font-family: MuseoSans, Arial, Helvetica, Sans-serif;
+	font-size: 12px;
+	width: 80%;
+	padding: 8px;
+	color: #B4B0A0;
+	background-color: #1A0202;
+	border: 1px solid #420909;
+	border-radius: 2px;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	margin: 5px;
+	-webkit-transition: all 300ms;
+	-moz-transition: all 300ms;
+	-o-transition: all 300ms;
+	-ms-transition: all 300ms;
+	transition: all 300ms;
+	box-shadow: inset 0px 0px 4px 0px rgba(0, 0, 0, 0.8);
+}
+
+#left article .body form #sidebox_login #login_username,
+#left article .body form #sidebox_login #login_password {
+	font-family: MuseoSans, Arial, Helvetica, Sans-serif;
+	font-size: 12px;
+	width: 90%;
+	padding: 8px;
+	color: #b4b0a0;
+	background-color: #1A0202;
+	border: 1px solid #420909;
+	border-radius: 2px;
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
+	margin-bottom: 5px;
+	-webkit-transition: all 300ms;
+	-moz-transition: all 300ms;
+	-o-transition: all 300ms;
+	-ms-transition: all 300ms;
+	transition: all 300ms;
+	box-shadow: inset 0px 0px 4px 0px rgba(0, 0, 0, 0.8);
+}
+#left article .body form #sidebox_login input[type="submit"] {
+	width:30% !important;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"]
+{
+	font-family:MuseoSans, Arial, Helvetica, Sans-serif;
+	font-size:12px;
+	width:80%;
+	padding:8px;
+	color:#b4b0a0;
+	background-color: #1A0202;
+	border: 1px solid #420909;
+	border-radius:2px;
+	-moz-border-radius:2px;
+	-webkit-border-radius:2px;
+	margin:5px;
+	-webkit-transition: all 300ms;
+	-moz-transition: all 300ms;
+	-o-transition: all 300ms;
+	-ms-transition: all 300ms;
+	transition: all 300ms;
+	box-shadow: inset 0px 0px 4px 0px rgba(0, 0, 0, 0.8);
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus,
+textarea:focus {
+	color:#BB7F41;
+	border:1px solid #450c04;
+}
+
+/* Full-page styles (log in, register etc.) */
+.page_form input[type="submit"] {
+	padding-left:20px;
+	padding-right:20px;
+	margin-top:20px;
+}
+
+.avatar, #ucp_avatar, .store_item .item_icon {
+	border:1px solid #000;
+	margin-right:10px;
+}
+.ucp_divider {
+	margin-top: 55px;
+	background-image:url(../images/divider.png);
+	background-repeat:no-repeat;
+	height:32px;
+	background-position:center;
+	opacity: 0.06;
+}
+.vertical_divider {
+	height:424px;
+	width:33px;
+}
+#armory {
+	margin-left:-5px !important;
+}
+/* First column in the #ucp_info */
+#ucp_info aside:first-child {
+	border-right: 1px solid #220303;
+}
+#ucp_info aside:nth-child(3) {
+	border-left: 1px solid #220303;
+}
+#ucp_info aside:last-child {
+	border-right:none !important;
+}
+/* Second <td> of each row */
+#ucp_info td:nth-child(2) {
+	font-weight:bold;
+}
+#ucp_buttons a {
+	border:1px solid #000;
+	
+}
+/* UCP: character list, character */
+#ucp_characters a {
+	border:1px solid #000;
+}
+/* =========== CMS: realm status =========== */
+#left .realm {
+	color:#a07332;
+	font-size:14px;
+}
+#left .realm .realm_online {
+	color:#3d4346;
+	float:right;
+	font-size:12px;
+}
+#left .realm .realm_bar, .poll_bar {
+	height:13px;
+	border:1px solid #080e14;
+	background-color:#000000;
+	border-radius:4px;
+	-moz-border-radius:4px;
+	-ms-border-radius:4px;
+	-o-border-radius:4px;
+	-webkit-border-radius:4px;
+	margin-top:10px;
+	margin-bottom:20px;
+}
+#left .realm .realm_bar .realm_bar_fill, .poll_bar_fill {
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-ms-border-radius: 3px;
+	-o-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	background: url(../images/realm_bar.png) left repeat-x;
+	height: 22px;
+	margin-top: 0px;
+	margin-left: 0px;
+	box-shadow: inset 0px 0px 0px 1px rgba(0, 0, 0, 1),
+				inset 0px 0px 6px 0px rgba(255,155,48,.7);
+}
+#left #realmlist {
+	border:1px solid #330202;
+	border-radius:3px;
+	-moz-border-radius:3px;
+	-ms-border-radius:3px;
+	-o-border-radius:3px;
+	-webkit-border-radius:3px;
+	padding: 7px 22px 7px 22px;
+	text-align:center;
+	color:#cf9b62;
+	font-size:11px;
+	font-family:Verdana, Geneva, sans-serif;
+	background:#1a0400;
+	box-shadow: inset 0 0 3px 0 rgba(0, 0, 0, 1);
+}
+/* Online players bar and realm bar (used on UCP, profiles) */
+.online_realm_button, #ucp_characters h1 {
+	background-image: url(../images/button_repeat.jpg);
+	height: 21px;
+	border: 1px solid #140000;
+	border-top-color: #700505;
+	text-shadow: 1px 1px 0px black;
+	margin-top:5px !important;
+	font-size: 13px;
+}
+.online_realm_button:hover {
+	color:#A07332;
+}
+.online_realm_button:active {
+	box-shadow:1px 1px 0px #020508, 0px 2px 5px #000 inset;
+	-webkit-box-shadow:1px 1px 0px #020508, 0px 2px 5px #000 inset;
+	-moz-box-shadow:1px 1px 0px #020508, 0px 2px 5px #000 inset;
+	-ms-box-shadow:1px 1px 0px #020508, 0px 2px 5px #000 inset;
+	-o-box-shadow:1px 1px 0px #020508, 0px 2px 5px #000 inset;
+}
+#ucp_info td {
+	font-size:10px;
+}
+/* Table style, used on vote panel, donate panel, online players etc. */
+.nice_table tr:first-child td {
+	border-bottom: 1px solid #1D0000;
+	color: #E7B164;
+	font-weight: normal;
+	font-family: Verdana, Geneva, sans-serif;
+	font-size: 13px;
+}
+#changelog .nice_table tr:not(:first-child) td {
+	font-weight: normal;
+	padding: 4px;
+	padding-left: 20px;
+	height: auto;
+	font-family: verdana;
+	font-size: 12px;
+}
+.nice_table tr:first-child td a {
+	color:#A07332;
+}
+.nice_table td {
+	vertical-align: middle;
+}
+/* =========== CMS: shout box =========== */
+#left #shoutbox textarea {
+	width:92%;
+	height:20px;
+}
+#left #shoutbox .shout_characters_remaining {
+	font-size:10px;
+	margin-top:12px;
+	margin-left:1px;
+}
+#left #shoutbox #shoutbox_submit {
+	float:right;
+	padding-left:20px;
+	padding-right:20px;
+}
+#left #the_shouts .shout {
+	border-bottom:1px solid rgba(14,24,32,0.5);
+	border-top:1px solid rgba(0,0,0,0.9);
+	padding:10px;
+	color:#3d4346;
+}
+#left #the_shouts .shout:first-child {
+	border-top:none;
+}
+#left #the_shouts .shout:last-child {
+	border-bottom:none;
+}
+#left #the_shouts .shout_date {
+	float:right;
+	font-size:10px;
+}
+#left #the_shouts .shout_author a {
+	color:#a07332;
+}
+#left #the_shouts .shout_staff a {
+	color:#2a88c8;
+}
+#left #shoutbox #shoutbox_view {
+	text-align:center;
+	padding-top:10px;
+}
+#left #shoutbox #shoutbox_view a {
+	font-size:14px;
+}
+/* PvP ladder sidebox */
+.toppvp_select {
+	border-bottom:1px solid rgba(14,24,32,0.5);
+	margin-top:5px;
+}
+.toppvp_realm {
+	width:255px !important; /* Width of the button - should be whole sidebox */
+}
+.toppvp_character {
+	border-bottom:1px solid rgba(14,24,32,0.5);
+	border-top:1px solid rgba(0,0,0,0.9);
+	padding:10px;
+	color:#3d4346;
+}
+.toppvp_character:first-child {
+	border-top:1px solid rgba(0,0,0,0.9);
+}
+.toppvp_character:last-child {
+	border-bottom:none;
+}
+/* FusionEditor WYSIWYG field */
+.fusioneditor .fusioneditor_tools {
+	color: #3D4346 !important;
+	border-bottom: none !important;
+	border: 1px solid #360202 !important;
+	background: #1A0400 !important;
+	box-shadow: inset 0px 0px 5px 0px rgba(0,0,0,0.6);
+}
+.fusioneditor .fusioneditor_tools a:hover {
+	border:1px solid #080E14 !important;
+	background-color:#020407 !important;
+	box-shadow:none !important;
+	-webkit-box-shadow:none !important;
+	-moz-box-shadow:none !important;
+}
+.fusioneditor .fusioneditor_tools a:active {
+	border:1px solid #666;
+}
+.fusioneditor .fusioneditor_field {
+	color:#B4B0A0;
+	background-color: #130101 !important;
+	border: 1px solid #410000 !important;
+	border-top:none !important;
+	box-shadow: inset 0px 0px 4px 0px rgba(0, 0, 0, 0.8);
+}
+.fusioneditor .fusioneditor_field b {
+	font-weight:bold;
+}
+.fusioneditor .fusioneditor_toolbox {
+	border-top: 1px solid #500 !important;
+}
+.fusioneditor .fusioneditor_size {
+	color:#666;
+}
+.fusioneditor .fusioneditor_size:hover {
+	color:#fff;
+}
+.fusioneditor .fusioneditor_color:hover {
+	border:1px solid rgba(0,0,0,0) !important;
+}
+.fusioneditor .fusioneditor_color:active {
+	border:1px solid rgba(0,0,0,0) !important;
+}
+#pm_read {
+	margin-bottom: 54px !important;
+}
+#gm div {
+	margin-top: 20px !important;
+}
+.page_form label {
+	font-size: 12px !important;
+}
+.fusioneditor .fusioneditor_tools a:hover {
+	border: 1px solid #570808 !important;
+	background-color: #1B0606 !important;
+	box-shadow: none !important;
+	-webkit-box-shadow: none !important;
+	-moz-box-shadow: none !important;
+}
+/* The pop up "autocomplete" box on private messages -> compose */
+#pm_username_autocomplete {
+	background-color:#0a0603 !important;
+	border: 1px solid #4B0A0A !important;
+}
+#pm_username_autocomplete a {
+	border-bottom: 1px solid #480A0A !important;
+}
+#ucp_buttons {
+	width:690px;
+	margin-left:-8px;
+}
+.fusioneditor .fusioneditor_toolbox input[type="text"] {
+	width: 85% !important;
+	margin-right: 10px;
+	height: 9px;
+	margin-left: 5px;
+	background: #110808;
+	border: 1px solid #400;
+	color: #888881;
+	padding-left: 4px;
+}
+/* Store: filter fields divider */
+#store form .filter_field {
+	border-left: 1px solid #5A070A;
+	margin-bottom:8px;
+}
+#store form .filter_field {
+	padding: 0px 9px 0px 9px !important;
+}
+/* Store: item group title */
+.item_group_title, .store_item {
+	text-shadow:1px 1px 0px #000;
+}
+.item_group_title {
+	margin-top:20px;
+	margin-bottom:5px;
+	font-size:12px;
+	font-weight:bold;
+	margin-left:13px;
+}
+/* Store: item group box */
+.item_group {
+	border-radius:2px;
+	-webkit-border-radius:2px;
+	-moz-border-radius:2px;
+	border:1px solid #0E171E;
+	background-color:rgba(7,14,18,0.8);
+	padding:0px;
+}
+/* Store: item */
+#store .store_item {
+	border-bottom:1px solid rgb(26,2,2);
+	height: 67px !important; 
+}
+#store .store_item .item_name {
+	font-size: 12px !important; 
+}
+#store .store_item .store_buttons {
+	float: right;
+	margin-top: 0 !important; 
+	margin-right: 3px;
+}
+/* Prevent the bottom border on the last item */
+.store_item:last-child {
+	border-bottom:none !important;
+}
+/* Prevent the top border on the first item */
+.store_item:first-child {
+	border-top:none;
+}
+#cart .store_item:hover .item_name, #cart .store_item:hover .item_realm {
+	margin-left: 25px;
+	display: block;
+}
+#cart_price_divider {
+	border-bottom:1px solid rgb(26,2,2);
+	margin-bottom:10px;
+}
+#armory_top h1 {
+	color:#eee;
+}
+#avatar_page center {
+	color:#fff;
+}
+#armory_stats td {
+	font-size:12px !important;
+}
+#store form input[type="text"] {
+	width:95px !important;
+}
+#change_form input[type="text"] {
+	width:50% !important;
+}
+#sidebox_login input[type="submit"] {
+	width:80%;
+	margin-bottom:10px;
+}
+#changelog_add form {
+	float: right;
+	margin-top: 0px !important;
+	width: 420px !important;
+}

@@ -1,0 +1,8 @@
+##########################################################################
+############ This will be a little version tracker #######################
+
+ (Current) Version 1.1 - Compitable with FusionCMS v6.1.7
+  - Banned accounts can no longer use this tool.
+
+ Version 1.0 - Compitable with FusionCMS v6.1.7
+  - Initial release.

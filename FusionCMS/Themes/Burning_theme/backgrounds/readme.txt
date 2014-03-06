@@ -1,0 +1,1 @@
+If you want to use any of those backgrounds change the name of the image to bg.jpg  and replace it with burning/images/bg.jpg

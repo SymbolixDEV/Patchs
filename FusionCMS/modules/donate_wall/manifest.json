@@ -1,0 +1,10 @@
+{
+	"name":"PaymentWall",
+	"description":"PaymentWall donation system",
+	"author":
+	{
+		"name":"Jesper Lindstr\u00f6m",
+		"website":"http:\/\/raxezdev.com"
+	},
+	"enabled":false
+}

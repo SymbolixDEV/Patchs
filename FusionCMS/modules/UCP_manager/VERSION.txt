@@ -1,0 +1,5 @@
+##########################################################################
+############ This will be a little version tracker #######################
+
+ (Current) Version 1.0 - Compitable with FusionCMS v6.1.7
+  - Initial release.

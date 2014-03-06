@@ -1,0 +1,103 @@
+#character_tools {
+	width:700px;
+}
+
+#select_character {
+	width:320px;
+	margin-right:20px;
+	margin-left:10px;
+	float:left;
+	margin-top:5px;
+}
+
+#select_tool {
+	width:320px;
+	float:left;
+	margin-right:10px;
+	margin-left:20px;
+	margin-top:5px;
+}
+
+.store_item {
+	border: none;
+}
+
+.store_item .item_icon {
+	float:left;
+	display:block;
+	margin-right:12px;
+}
+
+.vertical_divider {
+	float:left;
+}
+
+.character, .tool {
+	padding:10px;
+	height: 38px;
+}
+
+.character img, .tool img {
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+
+.character .character_name, .tool .tool_name {
+	font-weight:bold;
+	font-size:14px;
+}
+.character .character_buttons, .tool .tool_buttons {
+	float:right;
+	margin-top:12px;
+	margin-right:3px;
+}
+
+.select_tools {
+	margin-bottom:10px;
+}
+
+.select_character, .select_tool {
+	overflow:hidden;
+	opacity:0.5;
+	transition:0.3s all;
+	-webkit-transition:0.3s all;
+	-moz-transition:0.3s all;
+	-o-transition:0.3s all;
+	-ms-transition:0.3s all;
+}
+
+.select_character:hover, .select_tool:hover {
+	opacity:1;
+}
+
+.select_character .character_buttons, .select_tool .tool_buttons {
+	margin-right:-50px;
+	opacity:0;
+	transition:0.3s all;
+	-webkit-transition:0.3s all;
+	-moz-transition:0.3s all;
+	-o-transition:0.3s all;
+	-ms-transition:0.3s all;
+}
+
+.select_character:hover .character_buttons, .select_tool:hover .tool_buttons {
+	margin-right:0px;
+	opacity:1;
+}
+
+.teleport_realm_divider {
+	margin-top:10px;
+	margin-bottom:5px;
+	font-weight:bold;
+	font-size:10px;
+	opacity:0.5;
+}
+
+.active_tool {
+	opacity: 1 !important;
+	}
+	.active_tool .tool_buttons {
+	opacity: 1 !important;
+	margin-right:0px;
+	}
