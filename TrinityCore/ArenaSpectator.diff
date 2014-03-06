@@ -51,8 +51,6 @@ index 21c054c..bda05b4 100644
          player->SetBattlegroundId(0, BATTLEGROUND_TYPE_NONE);  // We're not in BG.
          // reset destination bg team
          player->SetBGTeam(0);
-+		player->SetGMVisible(true);
-+       player->SetGameMaster(false);
  
          if (Transport)
              player->TeleportToBGEntryPoint();
@@ -62,7 +60,7 @@ index 21c054c..bda05b4 100644
      {
 -        // drop flag and handle other cleanups
 -        RemovePlayer(player, guid, GetPlayerTeam(guid));
-+ if (!player->isSpectator())
++ if (!player->IsSpectator())
 +         {
 +            // drop flag and handle other cleanups
 +            RemovePlayer(player, guid, GetPlayerTeam(guid));
@@ -72,13 +70,13 @@ index 21c054c..bda05b4 100644
 -            if (GetAlivePlayersCountByTeam(player->GetBGTeam()) <= 1 && GetPlayersCountByTeam(GetOtherTeam(player->GetBGTeam())))
 -                EndBattleground(GetOtherTeam(player->GetBGTeam()));
 +            // 1 player is logging out, if it is the last, then end arena!
-+            if (isArena())
++            if (IsArena())
 +                if (GetAlivePlayersCountByTeam(player->GetTeam()) <= 1 && GetPlayersCountByTeam(GetOtherTeam(player->GetTeam())))
 +                    EndBattleground(GetOtherTeam(player->GetTeam()));
 +        }
 +    }
 +
-+    if (!player->isSpectator())
++    if (!player->IsSpectator())
 +        player->LeaveBattleground();
 +    else
 +    {
@@ -166,7 +164,7 @@ index c66d9d6..a74be6e 100644
      private:
          bool CreateBattleground(CreateBattlegroundData& data);
          uint32 CreateClientVisibleInstanceId(BattlegroundTypeId bgTypeId, BattlegroundBracketId bracket_id);
--        static bool IsArenaType(BattlegroundTypeId bgTypeId);
+-        static bool isArenaType(BattlegroundTypeId bgTypeId);
          BattlegroundTypeId GetRandomBG(BattlegroundTypeId id);
  
          typedef std::map<BattlegroundTypeId, BattlegroundData> BattlegroundDataContainer;
@@ -239,7 +237,7 @@ index 0000000..f174c1e
 +
 +    if (!isFilledIn(SPECTATOR_PREFIX_PLAYER))
 +    {
-+        sLog->outInfo(LOG_FILTER_BATTLEGROUND, "SPECTATOR ADDON: player is not filled in.");
++        TC_LOG_INFO(bg.battleground, "SPECTATOR ADDON: player is not filled in.");
 +        return addonData;
 +    }
 +
@@ -1264,7 +1262,7 @@ index 0000000..b449406
 +};
 +
 +const uint16 TopGamesRating = 1800;
-+const uint8  GamesOnPage    = 20;
++const uint8  GamesOnPage    = 15;
 +
 +class npc_arena_spectator : public CreatureScript
 +{
@@ -1273,8 +1271,9 @@ index 0000000..b449406
 +
 +        bool OnGossipHello(Player* pPlayer, Creature* pCreature)
 +        {
-+			pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Games 3v3", GOSSIP_SENDER_MAIN, NPC_SPECTATOR_ACTION_LIST_TOP_GAMES);
-+			pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Games 2v2", GOSSIP_SENDER_MAIN, NPC_SPECTATOR_ACTION_LIST_GAMES);
++			pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Spectate: Rated: 2v2 Games", GOSSIP_SENDER_MAIN, NPC_SPECTATOR_ACTION_LIST_GAMES);
++			pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Spectate Rated: 3v3 Games", GOSSIP_SENDER_MAIN, NPC_SPECTATOR_ACTION_LIST_TOP_GAMES);
++			pPlayer->ADD_GOSSIP_ITEM(GOSSIP_ICON_CHAT, "Spectate Specific Player.", GOSSIP_SENDER_MAIN, NPC_SPECTATOR_ACTION_SELECTED_PLAYER);
 +            pPlayer->SEND_GOSSIP_MENU(DEFAULT_GOSSIP_MESSAGE, pCreature->GetGUID());
 +            return true;
 +        }
