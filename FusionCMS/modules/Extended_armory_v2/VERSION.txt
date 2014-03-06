@@ -1,0 +1,8 @@
+##########################################################################
+############ This will be a little version tracker #######################
+
+ (Current) Version 2.1.b - Compitable with FusionCMS v6.0.1
+  - Fixed achievement tooltips.
+
+ Version 2.0.b - Compitable with FusionCMS v6.0.1
+  - Initial release.

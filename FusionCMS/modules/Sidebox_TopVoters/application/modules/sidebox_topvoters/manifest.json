@@ -1,0 +1,11 @@
+{
+	"name": "Sidebox: Top Voters of the Week",
+	"description": "Shows top X Voters of this week.",
+
+	"author": {
+		"name": "ChoMPi",
+		"website": ""
+	},
+	
+	"enabled": true
+}

@@ -1,0 +1,88 @@
+<style>
+h1#top_info{font-size:15px;font-family:RobotoLight;font-style:italic;font-weight:normal;text-shadow:1px 1px 0 rgba(255,255,255,.5);color:#545454;display:block!important;margin:0 0 20px 0!important}
+.extended-armory-gallery {
+height: 100px;
+}
+.extended-armory-gallery a {
+display: block;
+float: left;
+margin-right: 10px;
+}
+.extended-armory-gallery a img {
+opacity: 0.8;
+}
+.extended-armory-gallery a:hover img {
+opacity: 1;
+}
+</style>
+
+<h1 id="top_info">
+Extended Armory adds character talents preview and arena teams to the original armory.
+</h1>
+
+<font style="font-size: 16px; font-weight: bold;">Features:</font><br />
+- Class colored class name.<br />
+- Faction colored guild name.<br />
+- Full character Talents preview.<br />
+- Full character Glyphs preview.<br />
+- Dual spec Talents and Glyphs.<br />
+- Talent Tooltips.<br />
+- Glyph Tooltips.<br />
+- Character Arena Teams preview.<br />
+- Main and Secondary Professions.<br />
+- Recent Achievements with simple tooltips.<br />
+- Extended Item Tooltips (descripton below).<br />
+- Item icons are now being resolved locally (Solves missing icons).<br />
+- Fixed items for TrinityCore 4.3.4 (Since the cata emu has no items in the DB).<br />
+- Fixed Honor and Arena points for cataclysm emulators.<br />
+
+<br />
+<font style="font-size: 16px; font-weight: bold;">Extended Item Tooltips Features:</font><br />
+- Item Heroic flag.<br />
+- Character gems.<br />
+- Socket Bonuses.<br />
+- Character enchants.<br />
+- Character set parts.<br />
+- Item Sets.<br />
+- Set Bonuses.<br />
+- Meta gem requirements.<br />
+- Fixed items Armor and Demage for Cataclysm emulators.<br />
+
+<br />
+<font style="font-size: 16px; font-weight: bold;">Supported Emulators:</font><br />
+- TrinityCore - 3.5.5a<br />
+- TrinityCore - 4.3.4<br />
+- SkyfireEmu - 4.0.6a<br />
+- ArkCORE - 4.0.6a<br />
+- Mangos - 3.5.5a<br />
+- ArcEmu - 3.5.5a<br />
+
+<br />
+<a href="http://www.youtube.com/watch?v=mw3-PvMgZnM" target="_blank" title="How to install the Extended Armory." style="color: #3F6300;">How to Install Video at YouTube</a>
+<br />
+
+<br />
+<font style="font-size: 16px; font-weight: bold;">Changelogs:</font><br />
+Version 2.0 - Supports FusionCMS v6.1.7<br />
+
+<br />
+<font style="font-size: 16px; font-weight: bold;">Contacts:</font><br />
+E-mail address: chompibg@gmail.com<br />
+Skype: chikina6335<br />
+<br />
+
+<br />
+<div class="extended-armory-gallery">
+<a target='_blank' title="Click to view in full size." href='http://img16.imageshack.us/img16/2167/modulepreview.jpg'><img src="http://imageshack.us/scaled/thumb/16/modulepreview.jpg" border='0'/></a>
+
+<a target='_blank' title="Click to view in full size." href='http://img254.imageshack.us/img254/9704/itemhelmtooltip.jpg'><img src="http://imageshack.us/scaled/thumb/254/itemhelmtooltip.jpg" border='0'/></a>
+
+<a target='_blank' title="Click to view in full size."  href='http://img191.imageshack.us/img191/9783/talenttooltip.png'><img src="http://imageshack.us/scaled/avatar96/191/talenttooltip.png" border='0'/></a>
+
+<a target='_blank' title="Click to view in full size."  href='http://img14.imageshack.us/img14/5981/glyphtooltip.png'><img src="http://imageshack.us/scaled/avatar96/14/glyphtooltip.png" border='0'/></a>
+
+<a target='_blank' title="Click to view in full size." href='http://img844.imageshack.us/img844/6558/arenateammembertooltip.png'><img src="http://imageshack.us/scaled/avatar96/844/arenateammembertooltip.png" border='0'/></a>
+
+<a target='_blank' title="Click to view in full size." href='http://img51.imageshack.us/img51/4849/achievementsq.jpg'><img src="http://imageshack.us/scaled/thumb/51/achievementsq.jpg" border='0'/></a>
+</div>
+<br /><br />
