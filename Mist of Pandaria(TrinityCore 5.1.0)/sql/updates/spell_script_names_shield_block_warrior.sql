@@ -1,0 +1,1 @@
+REPLACE INTO `spell_script_names` (`spell_id`, `ScriptName`) VALUES (2565, 'spell_warr_shield_block');

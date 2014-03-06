@@ -1,0 +1,25 @@
+#ifndef DEF_SCARLET_MONASTERY_H_
+#define DEF_SCARLET_MONASTERY_H_
+
+#define MAX_ENCOUNTERS 3
+
+enum Creatures
+{
+	BOSS_BROTHER_KORLOFF   = 59223,
+    BOSS_HIGH_INQUISITOR_WHITEMANE   = 3977,
+    BOSS_THALNOS_THE_SOULDRENDER   = 59789,   
+};
+
+enum Objects
+{
+    
+};
+
+enum Data
+{
+	DATA_THALNOS_THE_SOULDRENDER   = 1,
+    DATA_BROTHER_KORLOFF   = 2,
+    DATA_HIGH_INQUISITOR_WHITEMANE   = 3,
+};
+
+#endif

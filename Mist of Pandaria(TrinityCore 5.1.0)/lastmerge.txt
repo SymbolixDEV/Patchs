@@ -1,0 +1,5 @@
+ported trinitycore 4.3.4 - 5.1.0a
+
+last merge 3/02/2013
+
+name commit - 66dfcd2b43286829a200a52aac83d57aac88f140

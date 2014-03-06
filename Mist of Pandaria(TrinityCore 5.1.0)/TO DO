@@ -1,0 +1,31 @@
+TO DO : 
+
+- Finish movement ( movementstructures.h ) - /*STATUS*/
+- Finish new quests system - /*STATUS*/
+- Finish group invite , channels , whispers and other minor things like duel , inspect etc. - /*STATUS*/
+- Fix achivements system - /*STATUS*/
+- Finish instance/dungeons system - /*STATUS*/
+- Fix vendors , gossip npc , trainer , npc scripts load and smartai maybe - /*STATUS*/
+- Fix items - /*STATUS*/
+- Rewrite dbc struct + fix monk chi / energy - /*STATUS*/
+- Finish pets - /*STATUS*/
+- Fix objects - /*STATUS*/
+- Finish spells system - /*STATUS*/
+- Fix damage , dodge , crit - /*STATUS*/
+- Fix mail - /*STATUS*/
+- Fix loot - /*STATUS*/
+- Fix glyphs - /*STATUS*/
+- Fix auction house - /*STATUS*/
+- Fix mana cost , and rage gain - /*STATUS*/
+- Implement MoP powertypes - /*STATUS*/
+- Implement BG system - /*STATUS*/
+- Implement vmaps and extractor - /*STATUS*/
+- Add 5.1.0 sniffs in english - /*STATUS*/
+- Finish calendar system - /*STATUS*/
+- Fix currency system - /*STATUS*/
+- Fix arenas - /*STATUS*/
+- Guilds - /*STATUS*/
+- Transmogorphy - /*STATUS*/
+- Void Storage - /*STATUS*/
+- Reforging - /*STATUS*/
+- Dungeon Finder - /*STATUS*/
