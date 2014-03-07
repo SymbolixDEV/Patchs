@@ -5,13 +5,13 @@
 To turn the statistics export off: open Control Panel, click on [Tools] > [Statistics...], and un-check the 'Export statistics to XML' checkbox.-->
 
 <statistics>
-<lastUpdate>27.2.2012 г. 02:12:15 ч.</lastUpdate>
+<lastUpdate></lastUpdate>
 <module>
-	<name>World Server</name>
-	<uptime>01:04:26</uptime>
+	<name>WorldServer</name>
+	<uptime>734559.02:12:15</uptime>
 </module>
 <module>
-	<name>Logon Server</name>
+	<name>AuthServer</name>
 	<uptime>734559.02:12:15</uptime>
 </module>
 <module>
