@@ -19,7 +19,7 @@ public:
         static ChatCommand utilityCommandTable[] =
         {
             { "changerace",             SEC_PLAYER,  false, &HandleChangeRaceCommand,           "", NULL },
-  		{ "changefaction",			SEC_PLAYER,  false, &HandleChangeFactionCommand,		"", NULL },
+			{ "changefaction",			SEC_PLAYER,  false, &HandleChangeFactionCommand,		"", NULL },
 			{ "maxskills",			    SEC_PLAYER,  false, &HandleMaxSkillsCommand,	    	"", NULL },
 			{ "customize",			    SEC_PLAYER,  false, &HandleCustomizeCommand,	       	"", NULL },
 			{ "mmr",			        SEC_PLAYER,  false, &HandleMMRCommand,      	       	"", NULL },
@@ -51,12 +51,17 @@ public:
         return true;
     }
 
-    static bool HandleMaxSkillsCommand(ChatHandler* handler, const char* args)
+	static bool HandleMaxSkillCommand(ChatHandler* handler, char const* /*args*/)
     {
+        Player* me=handler->GetSession()->GetPlayer();
+        {
+            handler->SendSysMessage("Your Weapon Skills are now maximized.");
+            handler->SetSentErrorMessage(true);
+            return false;
+        }
 
-        Player* me = handler->GetSession()->GetPlayer();
-		me->UpdateSkillsForLevel();
-		handler->PSendSysMessage("Your weapon skills are now maximized.");
+        // each skills that have max skill value dependent from level seted to current level max skill value
+        me->UpdateSkillsToMaxSkillsForLevel();
         return true;
     }
 

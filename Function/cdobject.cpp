@@ -11,7 +11,7 @@ class go_cooldown_reset : public GameObjectScript
 
         bool OnGossipHello(Player* player, GameObject* go)
         {
-            if (player->isInCombat())
+            if (player->IsInCombat())
                 ChatHandler(player).PSendSysMessage("You are in combat.");
             else
             {

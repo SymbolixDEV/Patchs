@@ -39,23 +39,7 @@ public:
 			}
 		}
 		return true;
-
-		item_faction() : ItemScript("item_faction") { }
-     
-        bool OnUse(Player* player, Item* item, const SpellCastTargets &)
-        {
-                    if (player->IsInCombat())
-                    {      
-                    player->GetSession()->SendNotification("You can't use this item in combat!");
-                            return false;
-                    }
-                    player->SetAtLoginFlag(AT_LOGIN_CHANGE_FACTION);
-                    player->GetSession()->SendNotification("You need to relog,to change your faction !");
-                    player->DestroyItemCount(item_id, 1, true, false);
-                    return true;
-            }
-    
-	}
+    }
 };
 
 void AddSC_CustomNPC()

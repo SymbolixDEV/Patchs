@@ -26,7 +26,7 @@ class commands : public CommandScript
      
                     Player* player = handler->GetSession()->GetPlayer();
      
-                    if (player->isDead() || player->HasFlag(PLAYER_FLAGS, PLAYER_FLAGS_GHOST))
+                    if (player->IsDead() || player->HasFlag(PLAYER_FLAGS, PLAYER_FLAGS_GHOST))
                     {
                             player->GetSession()->SendNotification("You can't chat when you're dead!");
                             handler->SetSentErrorMessage(true);
@@ -81,7 +81,7 @@ static bool HandleTeleportCommand(ChatHandler * handler, const char * args)
             handler->SetSentErrorMessage(true);
             return false;
         }
-        if (me->isInCombat())
+        if (me->IsInCombat())
         {
             handler->PSendSysMessage("You are in combat.");
             handler->SetSentErrorMessage(true);
@@ -96,7 +96,7 @@ static bool HandleTeleportCommand(ChatHandler * handler, const char * args)
         }
 
         // stop flight if need
-        if (me->isInFlight())
+        if (me->IsInFlight())
         {
             me->GetMotionMaster()->MovementExpired();
             me->CleanupAfterTaxiFlight();
