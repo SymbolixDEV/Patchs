@@ -100,7 +100,7 @@ index 21c054c..bda05b4 100644
 +
  bool Battleground::CheckAchievementCriteriaMeet(uint32 criteriaId, Player const* /*source*/, Unit const* /*target*/, uint32 /*miscvalue1*/)
  {
-     TC_LOG_ERROR(LOG_FILTER_BATTLEGROUND, "Battleground::CheckAchievementCriteriaMeet: No implementation for criteria %u", criteriaId);
+      TC_LOG_ERROR(LOG_FILTER_BATTLEGROUND, "Battleground::CheckAchievementCriteriaMeet: No implementation for criteria %u", criteriaId);
 diff --git a/src/server/game/Battlegrounds/Battleground.h b/src/server/game/Battlegrounds/Battleground.h
 index 1f18054..0c6b058 100644
 --- a/src/server/game/Battlegrounds/Battleground.h
@@ -711,7 +711,7 @@ index b1ee724..c6dd28d 100644
          if (target->isType(TYPEMASK_UNIT) && !GetVehicle())
 -            ((Unit*)target)->AddPlayerToVision(this);
 +            		{
-+            if (isSpectator())
++            if (IsSpectator())
 +                spectateFrom = (Unit*)target;
 +
 +             ((Unit*)target)->AddPlayerToVision(this);
@@ -719,7 +719,7 @@ index b1ee724..c6dd28d 100644
      }
      else
      {
-+		if (isSpectator() && !spectateFrom)
++		if (IsSpectator() && !spectateFrom)
 +            return;
          TC_LOG_DEBUG(LOG_FILTER_MAPS, "Player::CreateViewpoint: Player %s remove seer", GetName().c_str());
  
@@ -865,7 +865,7 @@ index 04c2c22..f472848 100644
  
  void BattlegroundMap::RemovePlayerFromMap(Player* player, bool remove)
  {
-+if (player && player->isSpectator() && !player->isSpectateCanceled())
++if (player && player->isSpectator() && !player->IsSpectateCanceled())
 +    {
 +        if (GetBG())
 +            GetBG()->RemoveSpectator(player->GetGUID());
