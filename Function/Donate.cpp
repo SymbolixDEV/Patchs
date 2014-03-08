@@ -21,14 +21,14 @@ class donate_npc : public CreatureScript
                                        
                                             switch(pPlayer->getClass())
                         {
-																case CLASS_WARRIOR:
-																		{
-																			pCreature->MonsterWhisper("text!", pPlayer->GetGUID(), true);
-																		}break;
+								case CLASS_WARRIOR:
+									{
+										pCreature->MonsterWhisper("text!", pPlayer->GetGUID(), true);
+									}break;
  
                                                                 case CLASS_PALADIN:
                                                                         {
-																			pCreature->MonsterWhisper("Text here!", pPlayer->GetGUID(), true);
+										pCreature->MonsterWhisper("Text here!", pPlayer->GetGUID(), true);
                                                                         }break;
  
                                                                 case CLASS_HUNTER:
