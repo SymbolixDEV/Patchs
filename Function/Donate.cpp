@@ -1,10 +1,10 @@
 /*script made by: SymbolixDEV
-Complete : 40%
+Complete : 50%
 */
 class donate_npc : public CreatureScript
 {
         public:
-                donate_npc() : CreatureScript("donate_npc"){}
+                donate_npc() : CreatureScript("donate_npc"){ }
      
                 bool OnGossipHello(Player * pPlayer, Creature * pCreature)
                 {
@@ -24,54 +24,144 @@ class donate_npc : public CreatureScript
 						
 			case CLASS_WARRIOR:
 			{
-				pCreature->MonsterWhisper("text!", pPlayer->GetGUID(), true);
+				pCreature->MonsterWhisper("Text Here for information!", pPlayer->GetGUID(), true);
+				        if (pPlayer->HasItemCount(23131, 25, true)) // donate reward
+                     	{
+                        		pPlayer->DestroyItemCount(23131, 25, true); // change 23131 with you custom Donate Reward Item !
+                         		pPlayer->AddItem(12302,1); // Change This for Donate Reward (12302 is item id ,1 Is item count)
+                         		pPlayer->AddItem(12302,1);
+                         		pPlayer->AddItem(12302,1);
+                         		pPlayer->AddItem(12302,1);
+                         		pPlayer->AddItem(12302,1);
+                         		pPlayer->AddItem(12302,1);
 			}break;
  
                         case CLASS_PALADIN:
-                        {
-				pCreature->MonsterWhisper("Text here!", pPlayer->GetGUID(), true);
-                        }break;
+			{
+				pCreature->MonsterWhisper("Text Here for information!", pPlayer->GetGUID(), true);
+				        if (pPlayer->HasItemCount(23131, 25, true)) // donate reward
+                     	{
+                        		pPlayer->DestroyItemCount(23131, 25, true); // change 23131 with you custom Donate Reward Item !
+                         		pPlayer->AddItem(12302,1); // Change This for Donate Reward (12302 is item id ,1 Is item count)
+                         		pPlayer->AddItem(12302,1);
+                         		pPlayer->AddItem(12302,1);
+                         		pPlayer->AddItem(12302,1);
+                         		pPlayer->AddItem(12302,1);
+                         		pPlayer->AddItem(12302,1);
+			}break;
  
                         case CLASS_HUNTER:
-                        {
-                                pCreature->MonsterWhisper("Text here!", pPlayer->GetGUID(), true);
-                        }break;
- 
+			{
+				pCreature->MonsterWhisper("Text Here for information!", pPlayer->GetGUID(), true);
+				        if (pPlayer->HasItemCount(23131, 25, true)) // donate reward
+                     	{
+                        		pPlayer->DestroyItemCount(23131, 25, true); // change 23131 with you custom Donate Reward Item !
+                         		pPlayer->AddItem(12302,1); // Change This for Donate Reward (12302 is item id ,1 Is item count)
+                         		pPlayer->AddItem(12302,1);
+                         		pPlayer->AddItem(12302,1);
+                         		pPlayer->AddItem(12302,1);
+                         		pPlayer->AddItem(12302,1);
+                         		pPlayer->AddItem(12302,1);
+			}break;
+			
                         case CLASS_ROGUE:
 			{
-				pCreature->MonsterWhisper("Text here!", pPlayer->GetGUID(), true);
-                        }break;
+				pCreature->MonsterWhisper("Text Here for information!", pPlayer->GetGUID(), true);
+				        if (pPlayer->HasItemCount(23131, 25, true)) // donate reward
+                     	{
+                        		pPlayer->DestroyItemCount(23131, 25, true); // change 23131 with you custom Donate Reward Item !
+                         		pPlayer->AddItem(12302,1); // Change This for Donate Reward (12302 is item id ,1 Is item count)
+                         		pPlayer->AddItem(12302,1);
+                         		pPlayer->AddItem(12302,1);
+                         		pPlayer->AddItem(12302,1);
+                         		pPlayer->AddItem(12302,1);
+                         		pPlayer->AddItem(12302,1);
+			}break;
  
                         case CLASS_PRIEST:
-                        {
-				pCreature->MonsterWhisper("Text here!", pPlayer->GetGUID(), true);
-                        }break;
+			{
+				pCreature->MonsterWhisper("Text Here for information!", pPlayer->GetGUID(), true);
+				        if (pPlayer->HasItemCount(23131, 25, true)) // donate reward
+                     	{
+                        		pPlayer->DestroyItemCount(23131, 25, true); // change 23131 with you custom Donate Reward Item !
+                         		pPlayer->AddItem(12302,1); // Change This for Donate Reward (12302 is item id ,1 Is item count)
+                         		pPlayer->AddItem(12302,1);
+                         		pPlayer->AddItem(12302,1);
+                         		pPlayer->AddItem(12302,1);
+                         		pPlayer->AddItem(12302,1);
+                         		pPlayer->AddItem(12302,1);
+			}break;
  
                         case CLASS_DEATH_KNIGHT:
-                        {
-                                pCreature->MonsterWhisper("Text here!", pPlayer->GetGUID(), true);
-                        }break;
+			{
+				pCreature->MonsterWhisper("Text Here for information!", pPlayer->GetGUID(), true);
+				        if (pPlayer->HasItemCount(23131, 25, true)) // donate reward
+                     	{
+                        		pPlayer->DestroyItemCount(23131, 25, true); // change 23131 with you custom Donate Reward Item !
+                         		pPlayer->AddItem(12302,1); // Change This for Donate Reward (12302 is item id ,1 Is item count)
+                         		pPlayer->AddItem(12302,1);
+                         		pPlayer->AddItem(12302,1);
+                         		pPlayer->AddItem(12302,1);
+                         		pPlayer->AddItem(12302,1);
+                         		pPlayer->AddItem(12302,1);
+			}break;
  
 			case CLASS_SHAMAN:
-                        {
-				pCreature->MonsterWhisper("Text here!", pPlayer->GetGUID(), true);
-                        }break;
+			{
+				pCreature->MonsterWhisper("Text Here for information!", pPlayer->GetGUID(), true);
+				        if (pPlayer->HasItemCount(23131, 25, true)) // donate reward
+                     	{
+                        		pPlayer->DestroyItemCount(23131, 25, true); // change 23131 with you custom Donate Reward Item !
+                         		pPlayer->AddItem(12302,1); // Change This for Donate Reward (12302 is item id ,1 Is item count)
+                         		pPlayer->AddItem(12302,1);
+                         		pPlayer->AddItem(12302,1);
+                         		pPlayer->AddItem(12302,1);
+                         		pPlayer->AddItem(12302,1);
+                         		pPlayer->AddItem(12302,1);
+			}break;
  
                         case CLASS_MAGE:
-                        {
-                                pCreature->MonsterWhisper("Text here!", pPlayer->GetGUID(), true);
-                        }break;
- 
+			{
+				pCreature->MonsterWhisper("Text Here for information!", pPlayer->GetGUID(), true);
+				        if (pPlayer->HasItemCount(23131, 25, true)) // donate reward
+                     	{
+                        		pPlayer->DestroyItemCount(23131, 25, true); // change 23131 with you custom Donate Reward Item !
+                         		pPlayer->AddItem(12302,1); // Change This for Donate Reward (12302 is item id ,1 Is item count)
+                         		pPlayer->AddItem(12302,1);
+                         		pPlayer->AddItem(12302,1);
+                         		pPlayer->AddItem(12302,1);
+                         		pPlayer->AddItem(12302,1);
+                         		pPlayer->AddItem(12302,1);
+			}break;
+			
                         case CLASS_WARLOCK:
-                        {
-		 	       pCreature->MonsterWhisper("Text here!", pPlayer->GetGUID(), true);
-                        }break;
+			{
+				pCreature->MonsterWhisper("Text Here for information!", pPlayer->GetGUID(), true);
+				        if (pPlayer->HasItemCount(23131, 25, true)) // donate reward
+                     	{
+                        		pPlayer->DestroyItemCount(23131, 25, true); // change 23131 with you custom Donate Reward Item !
+                         		pPlayer->AddItem(12302,1); // Change This for Donate Reward (12302 is item id ,1 Is item count)
+                         		pPlayer->AddItem(12302,1);
+                         		pPlayer->AddItem(12302,1);
+                         		pPlayer->AddItem(12302,1);
+                         		pPlayer->AddItem(12302,1);
+                         		pPlayer->AddItem(12302,1);
+			}break;
  
                         case CLASS_DRUID:
-                        {
-                                pCreature->MonsterWhisper("Text here!!", pPlayer->GetGUID(), true);
-                        }break;
- 
+			{
+				pCreature->MonsterWhisper("Text Here for information!", pPlayer->GetGUID(), true);
+				        if (pPlayer->HasItemCount(23131, 25, true)) // donate reward
+                     	{
+                        		pPlayer->DestroyItemCount(23131, 25, true); // change 23131 with you custom Donate Reward Item !
+                         		pPlayer->AddItem(12302,1); // Change This for Donate Reward (12302 is item id ,1 Is item count)
+                         		pPlayer->AddItem(12302,1);
+                         		pPlayer->AddItem(12302,1);
+                         		pPlayer->AddItem(12302,1);
+                         		pPlayer->AddItem(12302,1);
+                         		pPlayer->AddItem(12302,1);
+			}break;
+			
                         case 100:
                         {
                                 pPlayer->CLOSE_GOSSIP_MENU();
