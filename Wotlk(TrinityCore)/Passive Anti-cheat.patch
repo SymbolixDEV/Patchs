@@ -481,9 +481,9 @@ diff --git a/src/server/game/Entities/Player/Player.h b/src/server/game/Entities
  
          float GetAverageItemLevel();
  
-+        /*********************************************************/
-+        /***                 ANTICHEAT SYSTEM                  ***/
-+        /*********************************************************/
++        /********************************************************************/
++        /***                 ANTICHEAT SYSTEM       SymbolixDEV           ***/
++        /********************************************************************/
 +        uint32 GetLastPacketTime() { return uiLastPacketTime;}
 +        uint32 GetLastOpcode() { return uiLastOpcode; }
 +        float GetLastSpeedRate() { return fLastSpeedRate; }
@@ -506,9 +506,9 @@ diff --git a/src/server/game/Entities/Player/Player.h b/src/server/game/Entities
      private:
 @@ -2617,4 +2632,11 @@
      private:
-+        /*********************************************************/
-+        /***                    ANTICHEAT SYSTEM               ***/
-+        /*********************************************************/
++        /********************************************************************/
++        /***                    ANTICHEAT SYSTEM          SymboliXDEV     ***/
++        /********************************************************************/
 +        uint32  uiLastPacketTime;
 +        float fLastSpeedRate;
 +        uint32 uiLastOpcode;
@@ -737,7 +737,7 @@ diff --git a/src/server/worldserver/worldserver.conf.dist b/src/server/worldserv
  #        Default: 0 - off
  #                 1 - on
  #
-+#   Anticheat.Enable
++# SymbolixDEV  Anticheat.Enable 
 +#        Enable Anticheat System
 +#        Default: 0 - off
 +#                 1 - on
