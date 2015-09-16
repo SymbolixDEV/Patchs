@@ -3,7 +3,7 @@
 class TORSYSTEM : public PlayerScript
 {
     public:
-        SymbolixDevArenaSystem() : PlayerScript("TORSYSTEM") {	}
+        TORSYSTEM() : PlayerScript("TORSYSTEM") {	}
 //SymbolixDEV
     void OnPVPKill(Player* Killer, Player* Dead)
     {
