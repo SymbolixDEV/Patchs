@@ -1,0 +1,119 @@
+.context-menu-list {
+    margin:0; 
+    padding:0; 
+    min-width: 120px;
+    max-width: 250px;
+    display: inline-block;
+    position: absolute;
+    list-style-type: none;
+    
+    border: 1px solid #1e1e1e;
+    background: #0c0c0c;
+    
+    -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+       -moz-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        -ms-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+         -o-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    font-family:'FuturaEF-Book';
+    font-size: 13px;
+}
+
+.context-menu-item {
+    padding: 2px 2px 2px 24px;
+    background-color: #0c0c0c;
+    position: relative;
+    -webkit-user-select: none;
+       -moz-user-select: -moz-none;
+        -ms-user-select: none;
+            user-select: none;
+}
+
+.context-menu-separator {
+    padding-bottom:0;
+    border-bottom: 1px solid #1e1e1e;
+}
+
+.context-menu-item > label > input,
+.context-menu-item > label > textarea {
+    -webkit-user-select: text;
+       -moz-user-select: text;
+        -ms-user-select: text;
+            user-select: text;
+}
+
+.context-menu-item.hover {
+    cursor: pointer;
+    background-color: #0f0f0f;
+}
+
+.context-menu-item.disabled {
+    color: #606060;
+}
+
+.context-menu-input.hover,
+.context-menu-item.disabled.hover {
+    cursor: default;
+    background-color: #0a0a0a;
+}
+
+.context-menu-submenu:after {
+    content: ">";
+    color: #606060;
+    position: absolute;
+    top: 0;
+    right: 3px;
+    z-index: 1;
+}
+
+.context-menu-item.icon { min-height: 18px; background-repeat: no-repeat; background-position: 4px 2px; list-style-type: none;}
+.context-menu-item.icon-edit { background-image: url(images/page_white_edit.png); }
+.context-menu-item.icon-cut { background-image: url(images/cut.png); }
+.context-menu-item.icon-copy { background-image: url(images/page_white_copy.png); }
+.context-menu-item.icon-paste { background-image: url(images/page_white_paste.png); }
+.context-menu-item.icon-delete { 
+	background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAKcSURBVDhPrVRfSFNhFP/NdGNzqLTNmeDU7GFaRrS1vZiREC0ohPkUieVDJgnRk71FBEFvPdVDb/3B6sGBpGwRUU2p/BdRSycEuQ1sOicrtrndza17jt3h3eqtH5z7nZ3fOb/v23fPuYq8CPwH/FMoHk/g+3IAy6IRmpoa0SyaVlvJv4tRIhQOr2LUNYZkMgGLxQKDQc/xSGQdi4t+9nuc3airM7IvQSY0PTMHj8eDSwMXYayqRPbzPHKxGHNlNTUoP2jB6q8EHj0e4U26jncyRygIffEtwOudwtDlAaQ9Y8i8F0XimyjTqjmRfILqRAdUjm7cvXcfVuth2G1WjpfRg+7D5XLhfN85bI48QPrlFBcq6vVQDw2i8tow+wTiKIc2pNNTLYGFXr/xwuFwQOWbQ2bexwRBud+MXbX1UGi07EugnMyHt3A6nRif8HCMhfx+Px8x7X6FfCZbsNzG9v1I2MlRbvuBNoRCQeZYiLC1tgIhHMVWWihY9kf4DwsIX/0yjnPFGo1mux1YqKHBhK3VFWQTKbml05xEIL+YpxqdTsc8C0WjUUCtgRBLySzxbgnCtwW2zEKghN+JcnpQ8yn3tXFAWI/zKmHt6i1ei+MEZbsVoReT7POJ6H9SRys6WpCM/JSZpv8kW3EcXY1cI7sjannqVuPgFeSblRBy4tFFqzi2B7t7+tjIl+LZ6jxMw9d5lKiWUOjsp89GUVtrgF2vRODGbaQ+br+xmrM2XmNPZnitaKnC3js3Mb0uIBAIov9CL8dls0ZtbzI14MzpU9gYfYjIhBubn1aYUx+qR3WHHXpnL9xTswgGQ9zdEkqm//m4mxu0s/NoYY4k0FB7vZMwm8282U6UCBFofmZm5wufDQmtrWbYjlj+8k0CfgM3ZZZt5rG7iwAAAABJRU5ErkJggg==');
+ }
+.context-menu-item.icon-add { background-image: url(images/page_white_add.png); }
+.context-menu-item.icon-quit { background-image: url(images/door.png); }
+
+.context-menu-input > label > * { vertical-align: top; }
+
+.context-menu-input > label > input[type="checkbox"],
+.context-menu-input > label > input[type="radio"] {
+    margin-left: -17px;
+}
+.context-menu-input > label > span {
+    margin-left: 5px;
+}
+
+.context-menu-input > label,
+.context-menu-input > label > input[type="text"],
+.context-menu-input > label > textarea,
+.context-menu-input > label > select {
+    display: block;
+    width: 100%;
+    
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+        -ms-box-sizing: border-box;
+         -o-box-sizing: border-box;
+            box-sizing: border-box;
+}
+
+.context-menu-input > label > textarea {
+    height: 100px;
+}
+.context-menu-item > .context-menu-list {
+    display: none;
+    right: -5px;
+    top: 5px;
+}
+
+.context-menu-item.hover > .context-menu-list {
+    display: block;
+}
+
+.context-menu-accesskey {
+    text-decoration: underline;
+}
